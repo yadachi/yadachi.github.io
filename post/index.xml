@@ -6,78 +6,8 @@
     <description>Recent content in Posts on Just Keep Swimming</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 04 Jan 2017 00:23:30 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 28 Jan 2016 00:26:03 +0000</lastBuildDate>
     <atom:link href="http://blog.eku.soy/post/index.xml" rel="self" type="application/rss+xml" />
-    
-    <item>
-      <title>rust study day1</title>
-      <link>http://blog.eku.soy/2017/01/04/rust-study-day1/</link>
-      <pubDate>Wed, 04 Jan 2017 00:23:30 +0000</pubDate>
-      
-      <guid>http://blog.eku.soy/2017/01/04/rust-study-day1/</guid>
-      <description>
-
-&lt;p&gt;Rust day1&lt;/p&gt;
-
-&lt;h2 id=&#34;comments-and-formatted-print&#34;&gt;Comments and Formatted print&lt;/h2&gt;
-
-&lt;p&gt;今日からRustの勉強を始める。　
-rubybyexample.comをそのままやっていく勉強メモ。&lt;/p&gt;
-
-&lt;h3 id=&#34;commentの方法&#34;&gt;Commentの方法&lt;/h3&gt;
-
-&lt;p&gt;//スラッシュ２つでその行の最後までコメントアウトされる。
-/&lt;em&gt;　&lt;/em&gt;/　で囲むことで、囲んだところがすべてコメントとして扱われる。こっちはネストもできる。&lt;/p&gt;
-
-&lt;p&gt;///や//!で囲むと、Rustdocを使ってドキュメント生成することができる。
-この機能はもっと進んでから確認する。&lt;/p&gt;
-
-&lt;h3 id=&#34;formatted-print&#34;&gt;Formatted Print&lt;/h3&gt;
-
-&lt;p&gt;RustのPrintファンクションはすべてマクロで用意されている。 rust では！で終わるファンクションはマクロという決まりがある。
-ｓｔｄ：：ｆｍｔ
-主なものはこの３つ&lt;/p&gt;
-
-&lt;p&gt;format!　TextをフォーマットされたTextをStringとして出力。Pythonで言うとの、ｓｔｒ．String
-  print！　　format!と同じだが、コンソールに出力されうる。
-  println!　print!と同じだが、改行が追加されるて出力。&lt;/p&gt;
-
-&lt;p&gt;{}は引数が入る。　自動的にStringとして扱われる。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;println!(&amp;quot;{} days&amp;quot;, 31);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;引数の３１自体は型の指定がないため、デフォルトでi32扱いとなる。&lt;/p&gt;
-
-&lt;p&gt;引数を｛｝渡す方法にはいくつかのオプションがある。引数の場所を指定する場合&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;println!(&amp;quot;{0}, this is {1}. {1}, this is {0}&amp;quot;, &amp;quot;Alice&amp;quot;, &amp;quot;Bob&amp;quot;);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;引数に名前をつけて渡すことも可能&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;println!(&amp;quot;{subject} {verb} {object}&amp;quot;,
- 	     object=&amp;quot;the lazy dog&amp;quot;,
-             subject=&amp;quot;the quick brown fox&amp;quot;,
-             verb=&amp;quot;jumps over&amp;quot;);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;｛：ｂ｝を使用することで引数の値をバイナリーで表示に変更することもできる。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;println!(&amp;quot;{} of {:b} people know binary, the other half don&#39;t&amp;quot;, 1, 2);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;｛：&amp;gt;｝で数字を右揃えで整えることもできる&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;println!(&amp;quot;{number:&amp;gt;width$}&amp;quot;, number=1, width=6);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;右揃えした空白をゼロで埋めたい場合には{:&amp;gt;0}を使用する。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;println!(&amp;quot;{number:&amp;gt;0width$}&amp;quot;, number=1, width=6);
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
     
     <item>
       <title>AWS CND CloudFront</title>

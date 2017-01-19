@@ -35,31 +35,6 @@
 
         
         <article>
-          <h2><a href="http://blog.eku.soy/2017/01/04/rust-study-day1/">rust study day1</a></h2>
-<div>
-  
-    Rust day1
-Comments and Formatted print 今日からRustの勉強を始める。　rubybyexample.comをそのままやっていく勉強メモ。
-Commentの方法 //スラッシュ２つでその行の最後までコメントアウトされる。 /　/　で囲むことで、囲んだところがすべてコメントとして扱われる。こっちはネストもできる。
-///や//!で囲むと、Rustdocを使ってドキュメント生成することができる。 この機能はもっと進んでから確認する。
-Formatted Print RustのPrintファンクションはすべてマクロで用意されている。 rust では！で終わるファンクションはマクロという決まりがある。 ｓｔｄ：：ｆｍｔ 主なものはこの３つ
-format!　TextをフォーマットされたTextをStringとして出力。Pythonで言うとの、ｓｔｒ．String print！　format!と同じだが、コンソールに出力されうる。 println!　print!と同じだが、改行が追加されるて出力。
-{}は引数が入る。　自動的にStringとして扱われる。
-println!(&quot;{} days&quot;, 31);  引数の３１自体は型の指定がないため、デフォルトでi32扱いとなる。
-引数を｛｝渡す方法にはいくつかのオプションがある。引数の場所を指定する場合
-println!(&quot;{0}, this is {1}. {1}, this is {0}&quot;, &quot;Alice&quot;, &quot;Bob&quot;);  引数に名前をつけて渡すことも可能
-println!(&quot;{subject} {verb} {object}&quot;, object=&quot;the lazy dog&quot;, subject=&quot;the quick brown fox&quot;, verb=&quot;jumps over&quot;);  ｛：ｂ｝を使用することで引数の値をバイナリーで表示に変更することもできる。
-println!(&quot;{} of {:b} people know binary, the other half don't&quot;, 1, 2);  ｛：&gt;｝で数字を右揃えで整えることもできる
-
-    <footer>
-      <a href="http://blog.eku.soy/2017/01/04/rust-study-day1/">Read more</a>
-    </footer>
-  
-</div>
-
-        </article>
-        
-        <article>
           <h2><a href="http://blog.eku.soy/2016/01/28/aws-cdn-cloudfront/">AWS CND CloudFront</a></h2>
 <div>
   
@@ -200,6 +175,65 @@ IAストレージへのライフサイクル設定は前後30日期間を開け�
 永久的に削除する場合には、古いバージョンのファイルでも同じようにルールを設定して削除してあげる必要があります。</p>
 
 <p><img src="/images/AWS-S3/S3-lifecycle-6.png" alt="Lifecycle delete versioning" title="Lifecycle delete versioning" /></p>
+
+  
+</div>
+
+        </article>
+        
+        <article>
+          <h2><a href="http://blog.eku.soy/2016/01/25/aws-s3-versioning-and-cross-region-replication/">S3 バージョニングとクロスリージョンレプリケーション</a></h2>
+<div>
+  
+    <p>前回に続きS3の機能を見ていきますが、
+今回はS3のバージョニング機能の使い方とライフサイクルを中心に勉強していきます。</p>
+
+<p>###S3バージョニング機能</p>
+
+<p>バージョニング機能を有効にすると変更を保存してくれてどのバージョンのファイルでもアクセスできるようになります。
+バージョニング機能を使うのは至って簡単で、バケットのプロパティのバージョニング項目からバージョニングを有効にするボタンをクリックするだけです。ただし注意なければいけないのは、一度有効にすると無効にできないので必要か考慮してから有効にしましょう。</p>
+
+<p><img src="/images/AWS-S3/AWS-S3-versioning-1.png" alt="Enable versioning" title="Enable versioning" /></p>
+
+<p>さて、バージョニングを有効にしたら、バージョン管理を実際に試してみます。
+1つファイルをアップロードしてみるとバージョンのタブでバージョン作成時、バージョンID、サイズが確認できます。</p>
+
+<p><img src="/images/AWS-S3/AWS-S3-versioning-2.png" alt="Show versioning" title="Show versioning" /></p>
+
+<p>同じファイルを編集して再度アップロードすると、変更したファイルとオリジナルファイルが並んで確認できます。
+バージョン作成時、IDとサイズが違うのが確認できます。ちゃんとバージョン管理ができていますね。</p>
+
+<p><img src="/images/AWS-S3/AWS-S3-versioning-3.png" alt="versioning detail" title="versioning detail" /></p>
+
+<p>試しにバージョンタブを隠してファイルを削除してみます。そうするとバケットからはindex.htmlファイルは削除されますが
+、バージョンを表示するとバージン管理されたファイルが残っているのが分かります。ファイルを見るとわかりますが実際には削除されていなくて削除マークが付いているだけです。</p>
+
+<p><img src="/images/AWS-S3/AWS-S3-versioning-4.png" alt="Delete Marker" title="Delete Marker" /></p>
+
+<p>削除したファイルを戻したい場合には、削除マークが付いているファイルをアクションメニューから削除すれば、もとに戻すことができます。
+また、バージョン詳細の画面で、ファイルを削除するとそのバージョンのファイルを削除したことになり、1つ前のバージョンのファイルにリバートすることになります。削除マークはつかずに永久的にに削除されますので注意が必要です。</p>
+
+<p>バージョニングは間違って削除してしまったり変更管理に大変便利ですが、全てのバージョンファイルのサイズが使用料として課金ます。
+ですので、例えば上のバージョンファイルの例ですと、546バイトと614バイトの2つのファイルを保存している事になります。これが1GBのファイルとなると2GB使用していることになりますので、ファイルサイズが大きい場合には注意する必要があります。</p>
+
+<p>###クロスリージョンレプリケーション
+クロスリージョンレプリケーションを有効にすると、S3に保存んしたファイルが別の任意のリージョンにコピーされるようになります。
+使用するにはバージョニングを有効にしておく必要があります。
+複製先のリージョンとバケットを選び、セキュリティアクセスロールを選びます。
+ロールはIAMで勉強しましたが、リソースにアクセス権を付与できるセキュリティポリシーです。</p>
+
+<p><img src="/images/AWS-S3/AWS-S3-versioning-5.png" alt="Cross-Region-Replication" title="Cross-Region-Replication" /></p>
+
+<p>ロールが何もない場合には、新規作成して設定することができます。IAMロールは新しく作成すると自動的に、複製元と複製先のみアクセスが許可されたロールが作成されるので毎回個別に作成すると良いでしょう。</p>
+
+<p><img src="/images/AWS-S3/AWS-S3-versioning-6.png" alt="AM role for replication" title="IAM role for replication" /></p>
+
+<p>設定が完了するとバックアップ用のバケットが作成されて、新規にアップロードされたファイルから複製されていきます。</p>
+
+<p><img src="/images/AWS-S3/AWS-S3-versioning-7.png" alt="New bucket on destination region" title="New bucket on destination region" /></p>
+
+<p>有効後のファイルからのみ自動でコピーされるので、すでに保存されているファイルに関しては手動でコピーする必要があります。(<a href="http://docs.aws.amazon.com/AmazonS3/latest/API/RESTObjectCOPY.html">Copy API</a>を使用可能。)
+2つのバケットにファイルを保存するので、その分の料金が発生します、また転送した分のデータ通信も費用が発生します。費用を抑えるために、複製先はストレージタイプを、RRSにすることも可能です。またライフサイクルを有効にしてGlacierに移動することも可能です。</p>
 
   
 </div>

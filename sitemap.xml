@@ -2,11 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://blog.eku.soy/2017/01/04/rust-study-day1/</loc>
-    <lastmod>2017-01-04T00:23:30+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://blog.eku.soy/2016/01/28/aws-cdn-cloudfront/</loc>
     <lastmod>2016-01-28T00:26:03+00:00</lastmod>
   </url>
@@ -73,13 +68,13 @@
   
   <url>
     <loc>http://blog.eku.soy/</loc>
-    <lastmod>2017-01-04T00:23:30+00:00</lastmod>
+    <lastmod>2016-01-28T00:26:03+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://blog.eku.soy/post/</loc>
-    <lastmod>2017-01-04T00:23:30+00:00</lastmod>
+    <lastmod>2016-01-28T00:26:03+00:00</lastmod>
     <priority>0</priority>
   </url>
   
