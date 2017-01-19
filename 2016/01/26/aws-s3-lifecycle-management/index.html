@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="yadachi">
+  <meta name="generator" content="Hugo 0.18.1" />
+  <title>S3 のライフサイクルマネジメント — Just Keep Swimming</title>
+
+  <meta name="description" content="">
+  <link rel="canonical" href="http://blog.eku.soy/2016/01/26/aws-s3-lifecycle-management/">
+  <link href="" rel="alternate" type="application/rss+xml" title="Just Keep Swimming">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Arvo:400,700">
+  <link rel="stylesheet" href="http://blog.eku.soycss/highlight.css">
+  <link rel="stylesheet" href="http://blog.eku.soycss/paperback.css">
+</head>
+
+
+  <body>
+    <div class="container">
+
+      <header>
+  <h1>S3 のライフサイクルマネジメント</h1>
+
+  
+  <time datetime="2016-01-26 00:33:38 &#43;0000 UTC">2016/01/26</time>
+  
+
+  
+</header>
+
+
+      <article>
+        <p>S3にどんどんファイルを保存すると料金がかさんで行きますので、削除するなりGlacierなどに、移動する必要が出てきます。
+その作業をルールを使って自動で実行してくれるのがライフサイクル機能です。
+バージョニングの有無でマネジメント方法も少し変わってきます。
+まずは、バージョニング機能を向こうにした状態でライフサイクル管理機能を使って見までょう。
+プロパティからライフマネジメントメニュで設定が可能です。</p>
+
+<p><img src="/images/AWS-S3/S3-lifecycle-1.png" alt="Lifecycle settings" title="Lifecycle settings" /></p>
+
+<p>バケットかフォルダ単位か指定してルールを設定します。
+バージョン管理を無効にしていると3つのルールが表示されます。
+- IAストレージへ移行
+- Glacierへアーカイブ
+- ファイルの永久削除
+下の画面ではIAストレージへ移行してからGlacierへアーカイブするオプションの2つにチェックを入れてみました。
+アップロードしたファイルが30日後にIAストレージに移動され、60日後にGlacierにアーカイブされます。
+注意する点としては、この60日はアップロードされた日から60日でIAストレージに移動してからではありません。
+ 例としてアイコンがでて今日アップロードしたファイルがどのタイミングでIAストレージに移行しその後Glacierへアーカイブされるのかがひと目で分かるようになっています。</p>
+
+<p><img src="/images/AWS-S3/S3-lifecycle-2.png" alt="Lifecycle Example" title="Lifecycle Example" /></p>
+
+<p>デフォルトで30日と60日が設定されていますがこれには訳があり、IAストレージはアップロード後すぐに移動することはできません。
+最低30日経過しないとIAストレージに移動できない決まりになっていますので、例えば1日と入力すると30日以上を設定しなさいとエラーメッセージがかえってきます。</p>
+
+<p><img src="/images/AWS-S3/S3-lifecycle-3.png" alt="Lifecycle to IA Storage" title="Lifecycle to IA Storage" /></p>
+
+<p>また、IAストレージからGlacierへのアーカイブもIAストレージへ移行してから30日経過しないと移動できない決まりになっていますので注意が必要です。
+IAストレージへのライフサイクル設定は前後30日期間を開けておく必要があるとと覚えておきましょう。  また、IAストレージのみ128KB以上のファイルでないと移行することができないのも注意が必要です。</p>
+
+<p><img src="/images/AWS-S3/S3-lifecycle-4.png" alt="Lifecycle from IA Storage to Glaceir" title="Lifecycle from IA Storage to Glaceir" /></p>
+
+<p>IAストレージへ移動せずに、直接Glaceirにアーカイブをする設定であれば、アップロードの次の日にはアーカイブが開始できます。GlaceirへのアーカイブはIAストレージと違って日数の制限はありません。
+ただし、Glaceirは長期アーカイブすることを目的にシステムが設計されていますので、自動的に最低90日データを保管します。
+そのため例えばライフサイクルでGlacierへアーカイブ後のファイルの削除を60日に設定すると削除設定は60日だけれども実際には90日後に削除されますとメッセージがでますので心に止めておく必要があります。</p>
+
+<p><img src="/images/AWS-S3/S3-lifecycle-5.png" alt="Lifecycle delete on Glaceir" title="Lifecycle delete on Glaceir " /></p>
+
+<p>バージニングを有効にした場合のライフサイクルのメニュもちょっとだけ見ておきます。
+設定が有効ですと現在のバージョンと古いバージョンの2つのファイルに対してライフサイクルを実行できます。</p>
+
+<p><img src="/images/AWS-S3/S3-lifecycle-6.png" alt="Lifecycle with versioning" title="Lifecycle with versioning" /></p>
+
+<p>IAストレージへの移行やGlacierへのアーカイブの設定はバージョニング有り無しで特に変わりませんが、ファイルの削除はバージョニングされた複数のファイルがあるのでちょっと違います。
+現在のファイルにExpireを設定しても、S3 バージョニング設定で勉強したとおり実際には削除されずにDelete Markerがつくだけで削除はされません。
+永久的に削除する場合には、古いバージョンのファイルでも同じようにルールを設定して削除してあげる必要があります。</p>
+
+<p><img src="/images/AWS-S3/S3-lifecycle-6.png" alt="Lifecycle delete versioning" title="Lifecycle delete versioning" /></p>
+
+      </article>
+
+      <nav class="site-nav">
+  <a href="http://blog.eku.soy">Home</a>
+  <a href="http://blog.eku.soypost/">All posts</a>
+
+  
+
+    
+
+</nav>
+
+
+      <footer class="site-footer">
+  <span class="owner">©2016 yadachi</span>
+
+  
+</footer>
+
+
+    </div>
+
+  
+<script src="http://blog.eku.soyjs/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+  </body>
+</html>

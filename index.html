@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="yadachi">
+  <meta name="generator" content="Hugo 0.18.1" />
+  <title>Just Keep Swimming</title>
+
+  <meta name="description" content="">
+  <link rel="canonical" href="http://blog.eku.soy/">
+  <link href="http://blog.eku.soy/index.xml" rel="alternate" type="application/rss+xml" title="Just Keep Swimming">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Arvo:400,700">
+  <link rel="stylesheet" href="http://blog.eku.soycss/highlight.css">
+  <link rel="stylesheet" href="http://blog.eku.soycss/paperback.css">
+</head>
+
+
+  <body>
+    <div class="container">
+
+      <header>
+  <h1>Just Keep Swimming</h1>
+
+  
+
+  
+</header>
+
+
+      <section>
+
+        
+        <article>
+          <h2><a href="http://blog.eku.soy/2017/01/04/rust-study-day1/">rust study day1</a></h2>
+<div>
+  
+    Rust day1
+Comments and Formatted print 今日からRustの勉強を始める。　rubybyexample.comをそのままやっていく勉強メモ。
+Commentの方法 //スラッシュ２つでその行の最後までコメントアウトされる。 /　/　で囲むことで、囲んだところがすべてコメントとして扱われる。こっちはネストもできる。
+///や//!で囲むと、Rustdocを使ってドキュメント生成することができる。 この機能はもっと進んでから確認する。
+Formatted Print RustのPrintファンクションはすべてマクロで用意されている。 rust では！で終わるファンクションはマクロという決まりがある。 ｓｔｄ：：ｆｍｔ 主なものはこの３つ
+format!　TextをフォーマットされたTextをStringとして出力。Pythonで言うとの、ｓｔｒ．String print！　format!と同じだが、コンソールに出力されうる。 println!　print!と同じだが、改行が追加されるて出力。
+{}は引数が入る。　自動的にStringとして扱われる。
+println!(&quot;{} days&quot;, 31);  引数の３１自体は型の指定がないため、デフォルトでi32扱いとなる。
+引数を｛｝渡す方法にはいくつかのオプションがある。引数の場所を指定する場合
+println!(&quot;{0}, this is {1}. {1}, this is {0}&quot;, &quot;Alice&quot;, &quot;Bob&quot;);  引数に名前をつけて渡すことも可能
+println!(&quot;{subject} {verb} {object}&quot;, object=&quot;the lazy dog&quot;, subject=&quot;the quick brown fox&quot;, verb=&quot;jumps over&quot;);  ｛：ｂ｝を使用することで引数の値をバイナリーで表示に変更することもできる。
+println!(&quot;{} of {:b} people know binary, the other half don't&quot;, 1, 2);  ｛：&gt;｝で数字を右揃えで整えることもできる
+
+    <footer>
+      <a href="http://blog.eku.soy/2017/01/04/rust-study-day1/">Read more</a>
+    </footer>
+  
+</div>
+
+        </article>
+        
+        <article>
+          <h2><a href="http://blog.eku.soy/2016/01/28/aws-cdn-cloudfront/">AWS CND CloudFront</a></h2>
+<div>
+  
+    <p>今回はAWSのCDNサービスであるCloudFrontを勉強していきます。</p>
+
+<p>AWSはリージョンとそのAZゾーンが世界各地にありますが、CDNとして全世界をカバーするには拠点が足りません。
+そのためCDN専用の拠点としてエッジロケーションと呼ばれる場所があります。
+この拠点は、AWSのリージョンにあるAZゾーンとは別にコンテンツの配布場所として全世界で50ヶ所以上用意されています。</p>
+
+<p>さっそくCloudFrontを作ってみると、
+最初に新規作成するとコンテンツタイプを2つの中から選ぶことになります。</p>
+
+<ul>
+<li><p>Web<br />
+Webサーバで使用するコンテンツ。通常のHTMLファイル等はこれを使用する。</p></li>
+
+<li><p>RTMP<br />
+Adobe flash等のストリーミングを配信する場合はこのRTMPを使用する。</p></li>
+</ul>
+
+<p><img src="/images/AWS-S3/CloudFront-1.png" alt="CloudFront-Deliverymethod" title="CloudFront-Deliverymethod" /></p>
+
+<p>コンテンツタイプを選んで次のページに行くと実際の設定ができます。</p>
+
+<ul>
+<li>Origin Setting
+コンテンツのオリジナルとなるサーバ。AWSではS3バケット､EC2インスタンス、ElasticロードバランサーかRoute53が使用可能です。
+カーソルをドメイン名に移動すると自動的にS3のバケット名が出てきて簡単に選ぶことができます。またAWS以外のサービスでももちろんAWSのCDNを使用することは可能です。<br />
+Origin IDはデフォルトでバケット名が入力されますが、マルチオリジンの配布をする場合にはIDをわかるように設定する必要があります。<br /></li>
+</ul>
+
+<p><img src="/images/AWS-S3/CloudFront-2.png" alt="CloudFront-OriginSettings" title="CloudFront-OriginSettings" /></p>
+
+<ul>
+<li>Default Cache Behavior Settings
+パスパターンはデフォルトではワイルドカードですが、拡張子を選択しPDFのみを配布するだとか設定できます。<br />
+CDNへのアクセスプロトコルとHTTPのメソッドを指定することが可能で、PUTやPOSTも受け付けるので、CDNへの変更も許可することが可能です。
+また、カスタムでTTLの設定が可能です。デフォルトは24時となっていますが変更が可能です。<br />
+CloudFrontはこのTTLが来ると自動的にコンテンツが削除され、再度アクセスが来るとオリジナルからコピーして配布する仕組みとなっています。<br />
+Restrict viewer accessはログインしてアクセスが必要なサイト等で使用される機能で必要な場合には有効にする必要があります。<br /></li>
+</ul>
+
+<p><img src="/images/AWS-S3/CloudFront-3.png" alt="CloudFront-CacheBehaviorSettings" title="CloudFront-CacheBehaviorSettings" /></p>
+
+<ul>
+<li>Distribution 設定
+PriceクラスでCloudFrontのEdge Locationをカテゴリーで決められます。３つあって全世界とアメリカ、ヨーロッパとアメリカ、ヨーロッパとアジアから選べます。<br />
+CDNのアドレスはランダムなURLがアサインされるので、CNAMEを指定することができます。<br />
+またその際に必要なカスタム証明書を合わせて設定することができます。<br /></li>
+</ul>
+
+<p><img src="/images/AWS-S3/CloudFront-4.png" alt="CloudFront-DistributionSettings" title="CloudFront-DistributionSettings" /></p>
+
+<p>作成するとディストリビューションに表示されます。配布の準備が整うまでしばらく<code>In Progress</code>状態で待ちますが、</p>
+
+<p><img src="/images/AWS-S3/CloudFront-5.png" alt="CloudFront-In-Progress" title="CloudFront-In-Progress" /></p>
+
+<p>10-15分ほどすれば<code>Deployed</code>になります。</p>
+
+<p><img src="/images/AWS-S3/CloudFront-6.png" alt="CloudFront-Deployed" title="CloudFront-Deployed" /></p>
+
+<p>完了したら、CDN用のcroudfron.net Domain Nameでアクセスができます。</p>
+
+<p>設定変更画面で作成したCDN配布設定を再度変更できます。
+作成する際になかったRestrictionsとInvalidationsを見てみましょう。</p>
+
+<p><img src="/images/AWS-S3/CloudFront-7.png" alt="CloudFront-SettingsChange" title="CloudFront-SettingsChange" /></p>
+
+<p>Restrictionsはジオリストリクションが設定でき編集ボタンからジオリストリクションを有効にすると、特定の地域をホワイトリストかブラックリストで指定することができ、指定した地域のみに配布または配布から除外する設定が可能です。</p>
+
+<p><img src="/images/AWS-S3/CloudFront-8.png" alt="CloudFrontGeoRestriction" title="CloudFront-GeoRestriction" /></p>
+
+<p>Invalidationsは配布したファイルをTTLの削除時間が来る前に手動で削除する際に使用します。
+特定をファイルを指定すると、そのファイルが即座に削除対象になります。
+手動での削除は別途料金がかかります。</p>
+
+<p><img src="/images/AWS-S3/CloudFront-9.png" alt="CloudFront-Invalidations" title="CloudFront-Invalidations" /></p>
+
+<p>最後に削除する場合には、一度DisableをクリックしてDisabled状態になってからでないと、削除ボタンが押せません。Disableにして再度設定が反映されてからようやく削除ボタンが押せるようになります。</p>
+
+<p><img src="/images/AWS-S3/CloudFront-10.png" alt="CloudFront-Delete" title="CloudFront-Delete" /></p>
+
+<p>以上、ちょっと急ぎ足ですがCloudFrontの概要と使い方がわかったかと思います。
+時間があったらもうちょっとアップデートしたいと思います。</p>
+
+  
+</div>
+
+        </article>
+        
+        <article>
+          <h2><a href="http://blog.eku.soy/2016/01/26/aws-s3-lifecycle-management/">S3 のライフサイクルマネジメント</a></h2>
+<div>
+  
+    <p>S3にどんどんファイルを保存すると料金がかさんで行きますので、削除するなりGlacierなどに、移動する必要が出てきます。
+その作業をルールを使って自動で実行してくれるのがライフサイクル機能です。
+バージョニングの有無でマネジメント方法も少し変わってきます。
+まずは、バージョニング機能を向こうにした状態でライフサイクル管理機能を使って見までょう。
+プロパティからライフマネジメントメニュで設定が可能です。</p>
+
+<p><img src="/images/AWS-S3/S3-lifecycle-1.png" alt="Lifecycle settings" title="Lifecycle settings" /></p>
+
+<p>バケットかフォルダ単位か指定してルールを設定します。
+バージョン管理を無効にしていると3つのルールが表示されます。
+- IAストレージへ移行
+- Glacierへアーカイブ
+- ファイルの永久削除
+下の画面ではIAストレージへ移行してからGlacierへアーカイブするオプションの2つにチェックを入れてみました。
+アップロードしたファイルが30日後にIAストレージに移動され、60日後にGlacierにアーカイブされます。
+注意する点としては、この60日はアップロードされた日から60日でIAストレージに移動してからではありません。
+ 例としてアイコンがでて今日アップロードしたファイルがどのタイミングでIAストレージに移行しその後Glacierへアーカイブされるのかがひと目で分かるようになっています。</p>
+
+<p><img src="/images/AWS-S3/S3-lifecycle-2.png" alt="Lifecycle Example" title="Lifecycle Example" /></p>
+
+<p>デフォルトで30日と60日が設定されていますがこれには訳があり、IAストレージはアップロード後すぐに移動することはできません。
+最低30日経過しないとIAストレージに移動できない決まりになっていますので、例えば1日と入力すると30日以上を設定しなさいとエラーメッセージがかえってきます。</p>
+
+<p><img src="/images/AWS-S3/S3-lifecycle-3.png" alt="Lifecycle to IA Storage" title="Lifecycle to IA Storage" /></p>
+
+<p>また、IAストレージからGlacierへのアーカイブもIAストレージへ移行してから30日経過しないと移動できない決まりになっていますので注意が必要です。
+IAストレージへのライフサイクル設定は前後30日期間を開けておく必要があるとと覚えておきましょう。  また、IAストレージのみ128KB以上のファイルでないと移行することができないのも注意が必要です。</p>
+
+<p><img src="/images/AWS-S3/S3-lifecycle-4.png" alt="Lifecycle from IA Storage to Glaceir" title="Lifecycle from IA Storage to Glaceir" /></p>
+
+<p>IAストレージへ移動せずに、直接Glaceirにアーカイブをする設定であれば、アップロードの次の日にはアーカイブが開始できます。GlaceirへのアーカイブはIAストレージと違って日数の制限はありません。
+ただし、Glaceirは長期アーカイブすることを目的にシステムが設計されていますので、自動的に最低90日データを保管します。
+そのため例えばライフサイクルでGlacierへアーカイブ後のファイルの削除を60日に設定すると削除設定は60日だけれども実際には90日後に削除されますとメッセージがでますので心に止めておく必要があります。</p>
+
+<p><img src="/images/AWS-S3/S3-lifecycle-5.png" alt="Lifecycle delete on Glaceir" title="Lifecycle delete on Glaceir " /></p>
+
+<p>バージニングを有効にした場合のライフサイクルのメニュもちょっとだけ見ておきます。
+設定が有効ですと現在のバージョンと古いバージョンの2つのファイルに対してライフサイクルを実行できます。</p>
+
+<p><img src="/images/AWS-S3/S3-lifecycle-6.png" alt="Lifecycle with versioning" title="Lifecycle with versioning" /></p>
+
+<p>IAストレージへの移行やGlacierへのアーカイブの設定はバージョニング有り無しで特に変わりませんが、ファイルの削除はバージョニングされた複数のファイルがあるのでちょっと違います。
+現在のファイルにExpireを設定しても、S3 バージョニング設定で勉強したとおり実際には削除されずにDelete Markerがつくだけで削除はされません。
+永久的に削除する場合には、古いバージョンのファイルでも同じようにルールを設定して削除してあげる必要があります。</p>
+
+<p><img src="/images/AWS-S3/S3-lifecycle-6.png" alt="Lifecycle delete versioning" title="Lifecycle delete versioning" /></p>
+
+  
+</div>
+
+        </article>
+        
+
+      </section>
+
+      <nav class="site-nav">
+  <a href="http://blog.eku.soy">Home</a>
+  <a href="http://blog.eku.soypost/">All posts</a>
+
+  
+
+    
+
+</nav>
+
+
+      <footer class="site-footer">
+  <span class="owner">©2016 yadachi</span>
+
+  
+</footer>
+
+
+    </div>
+
+  
+<script src="http://blog.eku.soyjs/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+  </body>
+</html>

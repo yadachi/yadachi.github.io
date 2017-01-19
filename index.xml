@@ -1,0 +1,663 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Just Keep Swimming</title>
+    <link>http://blog.eku.soy/index.xml</link>
+    <description>Recent content on Just Keep Swimming</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 04 Jan 2017 00:23:30 +0000</lastBuildDate>
+    <atom:link href="http://blog.eku.soy/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>rust study day1</title>
+      <link>http://blog.eku.soy/2017/01/04/rust-study-day1/</link>
+      <pubDate>Wed, 04 Jan 2017 00:23:30 +0000</pubDate>
+      
+      <guid>http://blog.eku.soy/2017/01/04/rust-study-day1/</guid>
+      <description>
+
+&lt;p&gt;Rust day1&lt;/p&gt;
+
+&lt;h2 id=&#34;comments-and-formatted-print&#34;&gt;Comments and Formatted print&lt;/h2&gt;
+
+&lt;p&gt;今日からRustの勉強を始める。　
+rubybyexample.comをそのままやっていく勉強メモ。&lt;/p&gt;
+
+&lt;h3 id=&#34;commentの方法&#34;&gt;Commentの方法&lt;/h3&gt;
+
+&lt;p&gt;//スラッシュ２つでその行の最後までコメントアウトされる。
+/&lt;em&gt;　&lt;/em&gt;/　で囲むことで、囲んだところがすべてコメントとして扱われる。こっちはネストもできる。&lt;/p&gt;
+
+&lt;p&gt;///や//!で囲むと、Rustdocを使ってドキュメント生成することができる。
+この機能はもっと進んでから確認する。&lt;/p&gt;
+
+&lt;h3 id=&#34;formatted-print&#34;&gt;Formatted Print&lt;/h3&gt;
+
+&lt;p&gt;RustのPrintファンクションはすべてマクロで用意されている。 rust では！で終わるファンクションはマクロという決まりがある。
+ｓｔｄ：：ｆｍｔ
+主なものはこの３つ&lt;/p&gt;
+
+&lt;p&gt;format!　TextをフォーマットされたTextをStringとして出力。Pythonで言うとの、ｓｔｒ．String
+  print！　　format!と同じだが、コンソールに出力されうる。
+  println!　print!と同じだが、改行が追加されるて出力。&lt;/p&gt;
+
+&lt;p&gt;{}は引数が入る。　自動的にStringとして扱われる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;println!(&amp;quot;{} days&amp;quot;, 31);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;引数の３１自体は型の指定がないため、デフォルトでi32扱いとなる。&lt;/p&gt;
+
+&lt;p&gt;引数を｛｝渡す方法にはいくつかのオプションがある。引数の場所を指定する場合&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;println!(&amp;quot;{0}, this is {1}. {1}, this is {0}&amp;quot;, &amp;quot;Alice&amp;quot;, &amp;quot;Bob&amp;quot;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;引数に名前をつけて渡すことも可能&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;println!(&amp;quot;{subject} {verb} {object}&amp;quot;,
+ 	     object=&amp;quot;the lazy dog&amp;quot;,
+             subject=&amp;quot;the quick brown fox&amp;quot;,
+             verb=&amp;quot;jumps over&amp;quot;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;｛：ｂ｝を使用することで引数の値をバイナリーで表示に変更することもできる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;println!(&amp;quot;{} of {:b} people know binary, the other half don&#39;t&amp;quot;, 1, 2);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;｛：&amp;gt;｝で数字を右揃えで整えることもできる&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;println!(&amp;quot;{number:&amp;gt;width$}&amp;quot;, number=1, width=6);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;右揃えした空白をゼロで埋めたい場合には{:&amp;gt;0}を使用する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;println!(&amp;quot;{number:&amp;gt;0width$}&amp;quot;, number=1, width=6);
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>AWS CND CloudFront</title>
+      <link>http://blog.eku.soy/2016/01/28/aws-cdn-cloudfront/</link>
+      <pubDate>Thu, 28 Jan 2016 00:26:03 +0000</pubDate>
+      
+      <guid>http://blog.eku.soy/2016/01/28/aws-cdn-cloudfront/</guid>
+      <description>&lt;p&gt;今回はAWSのCDNサービスであるCloudFrontを勉強していきます。&lt;/p&gt;
+
+&lt;p&gt;AWSはリージョンとそのAZゾーンが世界各地にありますが、CDNとして全世界をカバーするには拠点が足りません。
+そのためCDN専用の拠点としてエッジロケーションと呼ばれる場所があります。
+この拠点は、AWSのリージョンにあるAZゾーンとは別にコンテンツの配布場所として全世界で50ヶ所以上用意されています。&lt;/p&gt;
+
+&lt;p&gt;さっそくCloudFrontを作ってみると、
+最初に新規作成するとコンテンツタイプを2つの中から選ぶことになります。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Web&lt;br /&gt;
+Webサーバで使用するコンテンツ。通常のHTMLファイル等はこれを使用する。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;RTMP&lt;br /&gt;
+Adobe flash等のストリーミングを配信する場合はこのRTMPを使用する。&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://blog.eku.soy/images/AWS-S3/CloudFront-1.png&#34; alt=&#34;CloudFront-Deliverymethod&#34; title=&#34;CloudFront-Deliverymethod&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;コンテンツタイプを選んで次のページに行くと実際の設定ができます。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Origin Setting
+コンテンツのオリジナルとなるサーバ。AWSではS3バケット､EC2インスタンス、ElasticロードバランサーかRoute53が使用可能です。
+カーソルをドメイン名に移動すると自動的にS3のバケット名が出てきて簡単に選ぶことができます。またAWS以外のサービスでももちろんAWSのCDNを使用することは可能です。&lt;br /&gt;
+Origin IDはデフォルトでバケット名が入力されますが、マルチオリジンの配布をする場合にはIDをわかるように設定する必要があります。&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://blog.eku.soy/images/AWS-S3/CloudFront-2.png&#34; alt=&#34;CloudFront-OriginSettings&#34; title=&#34;CloudFront-OriginSettings&#34; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Default Cache Behavior Settings
+パスパターンはデフォルトではワイルドカードですが、拡張子を選択しPDFのみを配布するだとか設定できます。&lt;br /&gt;
+CDNへのアクセスプロトコルとHTTPのメソッドを指定することが可能で、PUTやPOSTも受け付けるので、CDNへの変更も許可することが可能です。
+また、カスタムでTTLの設定が可能です。デフォルトは24時となっていますが変更が可能です。&lt;br /&gt;
+CloudFrontはこのTTLが来ると自動的にコンテンツが削除され、再度アクセスが来るとオリジナルからコピーして配布する仕組みとなっています。&lt;br /&gt;
+Restrict viewer accessはログインしてアクセスが必要なサイト等で使用される機能で必要な場合には有効にする必要があります。&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://blog.eku.soy/images/AWS-S3/CloudFront-3.png&#34; alt=&#34;CloudFront-CacheBehaviorSettings&#34; title=&#34;CloudFront-CacheBehaviorSettings&#34; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Distribution 設定
+PriceクラスでCloudFrontのEdge Locationをカテゴリーで決められます。３つあって全世界とアメリカ、ヨーロッパとアメリカ、ヨーロッパとアジアから選べます。&lt;br /&gt;
+CDNのアドレスはランダムなURLがアサインされるので、CNAMEを指定することができます。&lt;br /&gt;
+またその際に必要なカスタム証明書を合わせて設定することができます。&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://blog.eku.soy/images/AWS-S3/CloudFront-4.png&#34; alt=&#34;CloudFront-DistributionSettings&#34; title=&#34;CloudFront-DistributionSettings&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;作成するとディストリビューションに表示されます。配布の準備が整うまでしばらく&lt;code&gt;In Progress&lt;/code&gt;状態で待ちますが、&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://blog.eku.soy/images/AWS-S3/CloudFront-5.png&#34; alt=&#34;CloudFront-In-Progress&#34; title=&#34;CloudFront-In-Progress&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;10-15分ほどすれば&lt;code&gt;Deployed&lt;/code&gt;になります。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://blog.eku.soy/images/AWS-S3/CloudFront-6.png&#34; alt=&#34;CloudFront-Deployed&#34; title=&#34;CloudFront-Deployed&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;完了したら、CDN用のcroudfron.net Domain Nameでアクセスができます。&lt;/p&gt;
+
+&lt;p&gt;設定変更画面で作成したCDN配布設定を再度変更できます。
+作成する際になかったRestrictionsとInvalidationsを見てみましょう。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://blog.eku.soy/images/AWS-S3/CloudFront-7.png&#34; alt=&#34;CloudFront-SettingsChange&#34; title=&#34;CloudFront-SettingsChange&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Restrictionsはジオリストリクションが設定でき編集ボタンからジオリストリクションを有効にすると、特定の地域をホワイトリストかブラックリストで指定することができ、指定した地域のみに配布または配布から除外する設定が可能です。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://blog.eku.soy/images/AWS-S3/CloudFront-8.png&#34; alt=&#34;CloudFrontGeoRestriction&#34; title=&#34;CloudFront-GeoRestriction&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Invalidationsは配布したファイルをTTLの削除時間が来る前に手動で削除する際に使用します。
+特定をファイルを指定すると、そのファイルが即座に削除対象になります。
+手動での削除は別途料金がかかります。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://blog.eku.soy/images/AWS-S3/CloudFront-9.png&#34; alt=&#34;CloudFront-Invalidations&#34; title=&#34;CloudFront-Invalidations&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;最後に削除する場合には、一度DisableをクリックしてDisabled状態になってからでないと、削除ボタンが押せません。Disableにして再度設定が反映されてからようやく削除ボタンが押せるようになります。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://blog.eku.soy/images/AWS-S3/CloudFront-10.png&#34; alt=&#34;CloudFront-Delete&#34; title=&#34;CloudFront-Delete&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;以上、ちょっと急ぎ足ですがCloudFrontの概要と使い方がわかったかと思います。
+時間があったらもうちょっとアップデートしたいと思います。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>S3 のライフサイクルマネジメント</title>
+      <link>http://blog.eku.soy/2016/01/26/aws-s3-lifecycle-management/</link>
+      <pubDate>Tue, 26 Jan 2016 00:33:38 +0000</pubDate>
+      
+      <guid>http://blog.eku.soy/2016/01/26/aws-s3-lifecycle-management/</guid>
+      <description>&lt;p&gt;S3にどんどんファイルを保存すると料金がかさんで行きますので、削除するなりGlacierなどに、移動する必要が出てきます。
+その作業をルールを使って自動で実行してくれるのがライフサイクル機能です。
+バージョニングの有無でマネジメント方法も少し変わってきます。
+まずは、バージョニング機能を向こうにした状態でライフサイクル管理機能を使って見までょう。
+プロパティからライフマネジメントメニュで設定が可能です。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://blog.eku.soy/images/AWS-S3/S3-lifecycle-1.png&#34; alt=&#34;Lifecycle settings&#34; title=&#34;Lifecycle settings&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;バケットかフォルダ単位か指定してルールを設定します。
+バージョン管理を無効にしていると3つのルールが表示されます。
+- IAストレージへ移行
+- Glacierへアーカイブ
+- ファイルの永久削除
+下の画面ではIAストレージへ移行してからGlacierへアーカイブするオプションの2つにチェックを入れてみました。
+アップロードしたファイルが30日後にIAストレージに移動され、60日後にGlacierにアーカイブされます。
+注意する点としては、この60日はアップロードされた日から60日でIAストレージに移動してからではありません。
+ 例としてアイコンがでて今日アップロードしたファイルがどのタイミングでIAストレージに移行しその後Glacierへアーカイブされるのかがひと目で分かるようになっています。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://blog.eku.soy/images/AWS-S3/S3-lifecycle-2.png&#34; alt=&#34;Lifecycle Example&#34; title=&#34;Lifecycle Example&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;デフォルトで30日と60日が設定されていますがこれには訳があり、IAストレージはアップロード後すぐに移動することはできません。
+最低30日経過しないとIAストレージに移動できない決まりになっていますので、例えば1日と入力すると30日以上を設定しなさいとエラーメッセージがかえってきます。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://blog.eku.soy/images/AWS-S3/S3-lifecycle-3.png&#34; alt=&#34;Lifecycle to IA Storage&#34; title=&#34;Lifecycle to IA Storage&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;また、IAストレージからGlacierへのアーカイブもIAストレージへ移行してから30日経過しないと移動できない決まりになっていますので注意が必要です。
+IAストレージへのライフサイクル設定は前後30日期間を開けておく必要があるとと覚えておきましょう。  また、IAストレージのみ128KB以上のファイルでないと移行することができないのも注意が必要です。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://blog.eku.soy/images/AWS-S3/S3-lifecycle-4.png&#34; alt=&#34;Lifecycle from IA Storage to Glaceir&#34; title=&#34;Lifecycle from IA Storage to Glaceir&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;IAストレージへ移動せずに、直接Glaceirにアーカイブをする設定であれば、アップロードの次の日にはアーカイブが開始できます。GlaceirへのアーカイブはIAストレージと違って日数の制限はありません。
+ただし、Glaceirは長期アーカイブすることを目的にシステムが設計されていますので、自動的に最低90日データを保管します。
+そのため例えばライフサイクルでGlacierへアーカイブ後のファイルの削除を60日に設定すると削除設定は60日だけれども実際には90日後に削除されますとメッセージがでますので心に止めておく必要があります。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://blog.eku.soy/images/AWS-S3/S3-lifecycle-5.png&#34; alt=&#34;Lifecycle delete on Glaceir&#34; title=&#34;Lifecycle delete on Glaceir &#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;バージニングを有効にした場合のライフサイクルのメニュもちょっとだけ見ておきます。
+設定が有効ですと現在のバージョンと古いバージョンの2つのファイルに対してライフサイクルを実行できます。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://blog.eku.soy/images/AWS-S3/S3-lifecycle-6.png&#34; alt=&#34;Lifecycle with versioning&#34; title=&#34;Lifecycle with versioning&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;IAストレージへの移行やGlacierへのアーカイブの設定はバージョニング有り無しで特に変わりませんが、ファイルの削除はバージョニングされた複数のファイルがあるのでちょっと違います。
+現在のファイルにExpireを設定しても、S3 バージョニング設定で勉強したとおり実際には削除されずにDelete Markerがつくだけで削除はされません。
+永久的に削除する場合には、古いバージョンのファイルでも同じようにルールを設定して削除してあげる必要があります。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://blog.eku.soy/images/AWS-S3/S3-lifecycle-6.png&#34; alt=&#34;Lifecycle delete versioning&#34; title=&#34;Lifecycle delete versioning&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>S3 バージョニングとクロスリージョンレプリケーション</title>
+      <link>http://blog.eku.soy/2016/01/25/aws-s3-versioning-and-cross-region-replication/</link>
+      <pubDate>Mon, 25 Jan 2016 23:04:41 +0000</pubDate>
+      
+      <guid>http://blog.eku.soy/2016/01/25/aws-s3-versioning-and-cross-region-replication/</guid>
+      <description>&lt;p&gt;前回に続きS3の機能を見ていきますが、
+今回はS3のバージョニング機能の使い方とライフサイクルを中心に勉強していきます。&lt;/p&gt;
+
+&lt;p&gt;###S3バージョニング機能&lt;/p&gt;
+
+&lt;p&gt;バージョニング機能を有効にすると変更を保存してくれてどのバージョンのファイルでもアクセスできるようになります。
+バージョニング機能を使うのは至って簡単で、バケットのプロパティのバージョニング項目からバージョニングを有効にするボタンをクリックするだけです。ただし注意なければいけないのは、一度有効にすると無効にできないので必要か考慮してから有効にしましょう。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://blog.eku.soy/images/AWS-S3/AWS-S3-versioning-1.png&#34; alt=&#34;Enable versioning&#34; title=&#34;Enable versioning&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;さて、バージョニングを有効にしたら、バージョン管理を実際に試してみます。
+1つファイルをアップロードしてみるとバージョンのタブでバージョン作成時、バージョンID、サイズが確認できます。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://blog.eku.soy/images/AWS-S3/AWS-S3-versioning-2.png&#34; alt=&#34;Show versioning&#34; title=&#34;Show versioning&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;同じファイルを編集して再度アップロードすると、変更したファイルとオリジナルファイルが並んで確認できます。
+バージョン作成時、IDとサイズが違うのが確認できます。ちゃんとバージョン管理ができていますね。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://blog.eku.soy/images/AWS-S3/AWS-S3-versioning-3.png&#34; alt=&#34;versioning detail&#34; title=&#34;versioning detail&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;試しにバージョンタブを隠してファイルを削除してみます。そうするとバケットからはindex.htmlファイルは削除されますが
+、バージョンを表示するとバージン管理されたファイルが残っているのが分かります。ファイルを見るとわかりますが実際には削除されていなくて削除マークが付いているだけです。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://blog.eku.soy/images/AWS-S3/AWS-S3-versioning-4.png&#34; alt=&#34;Delete Marker&#34; title=&#34;Delete Marker&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;削除したファイルを戻したい場合には、削除マークが付いているファイルをアクションメニューから削除すれば、もとに戻すことができます。
+また、バージョン詳細の画面で、ファイルを削除するとそのバージョンのファイルを削除したことになり、1つ前のバージョンのファイルにリバートすることになります。削除マークはつかずに永久的にに削除されますので注意が必要です。&lt;/p&gt;
+
+&lt;p&gt;バージョニングは間違って削除してしまったり変更管理に大変便利ですが、全てのバージョンファイルのサイズが使用料として課金ます。
+ですので、例えば上のバージョンファイルの例ですと、546バイトと614バイトの2つのファイルを保存している事になります。これが1GBのファイルとなると2GB使用していることになりますので、ファイルサイズが大きい場合には注意する必要があります。&lt;/p&gt;
+
+&lt;p&gt;###クロスリージョンレプリケーション
+クロスリージョンレプリケーションを有効にすると、S3に保存んしたファイルが別の任意のリージョンにコピーされるようになります。
+使用するにはバージョニングを有効にしておく必要があります。
+複製先のリージョンとバケットを選び、セキュリティアクセスロールを選びます。
+ロールはIAMで勉強しましたが、リソースにアクセス権を付与できるセキュリティポリシーです。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://blog.eku.soy/images/AWS-S3/AWS-S3-versioning-5.png&#34; alt=&#34;Cross-Region-Replication&#34; title=&#34;Cross-Region-Replication&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;ロールが何もない場合には、新規作成して設定することができます。IAMロールは新しく作成すると自動的に、複製元と複製先のみアクセスが許可されたロールが作成されるので毎回個別に作成すると良いでしょう。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://blog.eku.soy/images/AWS-S3/AWS-S3-versioning-6.png&#34; alt=&#34;AM role for replication&#34; title=&#34;IAM role for replication&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;設定が完了するとバックアップ用のバケットが作成されて、新規にアップロードされたファイルから複製されていきます。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://blog.eku.soy/images/AWS-S3/AWS-S3-versioning-7.png&#34; alt=&#34;New bucket on destination region&#34; title=&#34;New bucket on destination region&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;有効後のファイルからのみ自動でコピーされるので、すでに保存されているファイルに関しては手動でコピーする必要があります。(&lt;a href=&#34;http://docs.aws.amazon.com/AmazonS3/latest/API/RESTObjectCOPY.html&#34;&gt;Copy API&lt;/a&gt;を使用可能。)
+2つのバケットにファイルを保存するので、その分の料金が発生します、また転送した分のデータ通信も費用が発生します。費用を抑えるために、複製先はストレージタイプを、RRSにすることも可能です。またライフサイクルを有効にしてGlacierに移動することも可能です。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>S3(Simple Storage Service)の基本</title>
+      <link>http://blog.eku.soy/2016/01/22/aws-s3-basics/</link>
+      <pubDate>Fri, 22 Jan 2016 22:17:38 +0000</pubDate>
+      
+      <guid>http://blog.eku.soy/2016/01/22/aws-s3-basics/</guid>
+      <description>&lt;p&gt;今回はAWSのS3ストレージサービスの基本となる情報で、試験に出そうなところをまとめる。&lt;/p&gt;
+
+&lt;p&gt;###概要&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;S3はオブジェクトベースのストレージ、フラットファイルのみ保存が可能という意味。OSやデータベースは保存不可能(ブロックベースのストレージが必要)。&lt;/li&gt;
+&lt;li&gt;容量は無制限、1ファイル1Byte から5TBまで保存可能。&lt;/li&gt;
+&lt;li&gt;ファイルはバケットというフォルダに保存する。&lt;/li&gt;
+&lt;li&gt;バケットはユニバーサルにユニークなアドレスをつける必要がある。&lt;/li&gt;
+&lt;li&gt;デフォルトでは100バケットまで作成可能(それ以上はAWSにリクエストする必要がある)&lt;/li&gt;
+&lt;li&gt;可用性は99.99%指定したリージョンのすべてのAvailability zoneに自動的に複製される。&lt;br /&gt;
+2拠点のAZが機能不全になってもアクセスが可能なデザイン。&lt;/li&gt;
+&lt;li&gt;高い堅牢性を誇る。99.999999999％(9.11と覚える)、複数のデバイス/AZにコピーされる。&lt;/li&gt;
+&lt;li&gt;Life cycle管理と、バージョン管理が可能&lt;/li&gt;
+&lt;li&gt;ファイルをアップロード後、他のデバイスにコピーされるまで読み書きはできない。&lt;/li&gt;
+&lt;li&gt;ファイルの更新も変更がコピーされる時間が発生するので、アプリ側からファイルを読む際には、それを考慮する必要がある。
+&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;通常のS3は標準クラスのストレージを使用するが、アクセス頻度が少ないファイルや高い堅牢性が必要ないデータの為に、その他に3つのストレージクラスを提供している。&lt;/p&gt;
+
+&lt;p&gt;###ストレージクラス&lt;br /&gt;
+- Reduced Redundancy Storage&lt;br /&gt;
+可用性はS3と同じだが堅牢性は99.99％。これは1万個のファイルを保存すると、1年で1ファイルが失う計算。AZにコピーされるが1拠点の障害までしか対応できないデザイン。
+- Glacier
+S3と同じ堅牢性の99.999999999％を提供している。
+データの長期アーカイブ目的で使用する。料金がS3のスタンダードよりも格段に安いがデータの取り出しに通常3-5時間を要する。
+- IA(infrequent access)ストレージ&lt;br /&gt;
+最近リリースされたストレージタイプで、通常のS3標準クラスと同じ可用性/堅牢性を提供するがアクセス頻度が少ないデータをターゲットにしている。ただしGlacierと違いデータの読み出しが早い事が特徴のストレージクラスとなる。データの取り出しに別途料金が発生する。&lt;/p&gt;
+
+&lt;p&gt;次回はバージョニングとライフサイクルマネジメントを勉強します。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>2016年 新年の目標</title>
+      <link>http://blog.eku.soy/2016/01/21/2016-new-years-resolution/</link>
+      <pubDate>Thu, 21 Jan 2016 00:46:56 +0000</pubDate>
+      
+      <guid>http://blog.eku.soy/2016/01/21/2016-new-years-resolution/</guid>
+      <description>&lt;p&gt;早くも今年になって1ヶ月が終わりそうですが、今年の目標をここに載せておきます。&lt;/p&gt;
+
+&lt;p&gt;###1. AWSの資格取得
+去年の年末からAWSの資格を勉強し始めたので、今年の前半は集中して勉強しsolution architect associate の資格を取得します。&lt;br /&gt;
+テストは3月を予定しているので、スケジュールをきっちり守って確実に取得を狙います。&lt;/p&gt;
+
+&lt;p&gt;###2. 仕事
+今のインフラメインの仕事はオンプレのMS系がメインなので、クラウド/OSSに携わる会社に転職したいとおもっています。なので、AWSの資格を携えてその方面で転職活動をするつもりです  。&lt;br /&gt;
+正直な話、子供ができて家のローンもあるのでもっと給料を上げたいというのが理由で、転職/給料アップは今年の必須目標です。&lt;/p&gt;
+
+&lt;p&gt;この2つが今年前半にかかるメインの目標です。
+それ以外に一年を通して目標にしているのを上げると、&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;エクササイズ&lt;br /&gt;
+もう歳なので、子供の世話とか一緒に遊んだり、家事をしてるとほんとに体力が必要なのを実感しました。&lt;br /&gt;
+子供を寝かしつけながら自分が寝落ちすることが何度もあったり、AWSの勉強する時間を作るのもしんどいので、エクササイズが必須の所まで来ました。&lt;br /&gt;
+ただ、ジムに行く時間とかあまりないので、毎日のちょっとした時間に腕立てをするのが今年の目標です。&lt;br /&gt;
+一応、今年中に腕立てが100回できるようになればと思っています。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;カンファレンス、Meetup系のイベント参加&lt;br /&gt;
+前から一度参加したいと思っていたのですが、億劫になって一度も参加したことがないので、&lt;br /&gt;
+今年こそはAWSのユーザグループか、Meetupに参加しようと思ってます。&lt;br /&gt;
+一度で良いので参加できれば目標達成です。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;読書(年間4冊）
+去年全く技術書を読んでないので、今年は4冊を目標に技術書を読みます。&lt;br /&gt;
+3ヶ月に1冊のペースで基本は通勤時間は読書をするを習慣にできればと思います。&lt;br /&gt;
+通勤時間は眠くなるのでついPodcastを聞いてしまって本を読まなくなってしまったので、&lt;br /&gt;
+今年はPodcast控えめにして読書してITの基礎体力を付けたいと思います。&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;と以上が2016年の目標としてあげています。&lt;br /&gt;
+今はAWSの勉強に集中するので、もうちょっと時間ができたら具体的は数字を出して達成できるように計画するつもりでいます。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Identity &amp;amp; Access Management Part 2</title>
+      <link>http://blog.eku.soy/2015/11/19/identity-and-access-management-part-2/</link>
+      <pubDate>Thu, 19 Nov 2015 06:47:58 +0000</pubDate>
+      
+      <guid>http://blog.eku.soy/2015/11/19/identity-and-access-management-part-2/</guid>
+      <description>&lt;p&gt;###Identity Federation&lt;/p&gt;
+
+&lt;p&gt;Solution Architect アソシエイトの試験にどこまで詳細に出るかわかりませんが、概要はわかっていたほうが良いと思うので、
+連携の仕組みを理解しておこうと思います。&lt;/p&gt;
+
+&lt;p&gt;Identity FederationとはID連携のことで、簡単に説明するとAWSアカウントのユーザを他の認証機関と連携できるようになるということです。つまりはSSOを実現できる機能になります。
+エンタープライズユーザはIAMユーザをたくさん管理する必要があると想像に難くないと思いますが、
+そのID管理をすでにオンプレミスにあるActive Directoryと連携しSSOを行うようにできます。&lt;/p&gt;
+
+&lt;p&gt;ADとAWSの連携には、SAML（Security Assertion Markup Language)が使われるのですが、素のActive DirectoryはKerberos認証なので、SAMLを扱えるAD FSを構築する必要があります。AWSと連携するのでAD FSをDMZ等に構築しAWSのAPIと通信できるようにしておきます。
+Active Directoryとの連携とユーザがAWSコンソールの認証をえるフローをわかりやすく説明しているのがAWSのブログ記事にあり、以下この図のフローがとてもわかり易いと思います。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://aws.typepad.com/aws_japan/2013/11/aws-identity-and-access-management-using-saml.html&#34;&gt;&lt;img src=&#34;http://media.amazonwebservices.com/blog/2013/iam_saml_flow_2.png&#34; alt=&#34;IAM SAMLフロー&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;重要なのは、ID連携にはSAMLが使用されることと、AWSコンソールの認証ははじめにAWSにアクセスするのではなくて、AD FSのポータルでActive Directoryに対して認証しグラントされたら、AWSにリダイレクトされるというフローです。&lt;/p&gt;
+
+&lt;p&gt;詳細な、SAMLでの連携は&lt;a href=&#34;http://www.slideshare.net/AmazonWebServicesJapan/20150617-aws-blackbeltiam&#34;&gt;AWS Black Belt Tech Webinar スライド&lt;/a&gt;に解説してあるので、時間があるときに見てみることにします。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Identity &amp;amp; Access Management (IAM) Part 1</title>
+      <link>http://blog.eku.soy/2015/11/18/identity-and-access-management-part-1/</link>
+      <pubDate>Wed, 18 Nov 2015 22:26:19 +0000</pubDate>
+      
+      <guid>http://blog.eku.soy/2015/11/18/identity-and-access-management-part-1/</guid>
+      <description>&lt;p&gt;Identity &amp;amp; Access Management 略してIAMはAWSコンソールにアクセスするユーザのアカウント管理するサービス。
+IAMを一番最初に勉強していきます。どうして一番最初に勉強するかと言うと、
+AWSのサービスを使うにはアカウントを作成しすぐにEC2やS3を使いはじめることができますが、
+デフォルトのルートアカウントで作業をしているとそのアカウント情報が流出してしまうと、
+リソースを使い放題され自分に支払いが回ってきますので、まずはIAMでルート以外のアカウントを作成し作業をすることを勧めます。&lt;/p&gt;
+
+&lt;p&gt;###主な機能&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;AWSアカウントの一元管理&lt;/li&gt;
+&lt;li&gt;既存のActivie Directoryと統合しSSO(Single Sign On)を提供&lt;/li&gt;
+&lt;li&gt;AWSリソースへのきめ細かなアクセス権管理&lt;/li&gt;
+&lt;li&gt;ユーザ/グループ/ロールでのアクセス管理を提供&lt;/li&gt;
+&lt;li&gt;2要素認証を提供&lt;/li&gt;
+&lt;li&gt;ユーザへのテンポラリーアクセス権の提供&lt;/li&gt;
+&lt;li&gt;パスワードポリシーの設定&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;###概要&lt;/p&gt;
+
+&lt;p&gt;####IAM ユーザ
+AWSコンソールへのアクセスに使用することができます。
+AWSの1アカウントにつき5000ユーザまで作成が可能です。
+最大で10のグループまで所属可能。&lt;/p&gt;
+
+&lt;p&gt;####グループ
+AWSの1アカウントにつき100まで作成可能。
+作成したユーザを所属させ、グループごとにパーミッションを付与させることができる。&lt;/p&gt;
+
+&lt;p&gt;####ロール
+グループと似ているけれども、AWSのサービスからサービスへのパーミッションを設定可能。
+例えばEC2からS3へアクセスを許可する場合などに使用することで、IAMユーザのクレデンシャルをOSやアプリケーションに持たせる必要がないため、
+アカウント情報の漏えいリスクが軽減できる。&lt;/p&gt;
+
+&lt;p&gt;###ハンズオン&lt;/p&gt;
+
+&lt;p&gt;サービス一覧からSecurity &amp;amp; Identity カテゴリにあるIdentity&amp;amp; Access Management を選択する。
+Dashboard画面がひらき、IAM ResourcesやSecurity Statusが確認できる。
+一番上にある&lt;strong&gt;IAM users sign-in link&lt;/strong&gt;は、自分のAWSコンソールにIAMユーザがアクセスする際のURLになる。
+デフォルトのアドレスはランダムなものなので、Customizeからエイリアス名を設定できわかりやすいアドレスに変更ができる。&lt;/p&gt;
+
+&lt;p&gt;ダッシュボード下にはSecurity Status画面が表示されている。はじめはStatusがDelete your Root access Keys以外はオレンジになっている。
+RootKeyはデフォルトで新規アカウントは削除されるので緑色。
+その他４つを実施することを進められる。
+以下４つのレコメンデーション&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;RootアカウントでのMulti Factor Authenticationを有効化（Rootは２段階認証を実施し他人がRootアカウントでログイン出来ないようにする）&lt;/li&gt;
+&lt;li&gt;個別のIAM ユーザアカウントの作成。(Rootでの作業はしない）&lt;/li&gt;
+&lt;li&gt;グループを作成して権限を付与する。&lt;/li&gt;
+&lt;li&gt;IAMアカウントへのパスワードポリシーの有効化&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;####MFA設定
+一番最初はルートアカウントにMFAを使用するようにする。
+ダッシュボードの二番目をクリックして設定をすすめる。
+Virtual MFA Device（アプリベース）かHardware MFA Device (USBキーなど）を使用するか選ぶ。
+ここではスマートフォンにアプリをインストールしてMFAができるようにしたいので、Virtual MFA Deviceを選択する。AWSと自分のアプリをシンクする前に、MFA用アプリをインストールして準備しておくようにメッセージがでるので、アプリの準備をしておく。
+QRコードが画面にでるので、MFAアプリを起動しスキャナで読み取る。
+ワンタイムPINが表示されたら、２回続けてCode1とCode2に入力しActivate Virtual MFAをクリックする。
+サクセスできたら設定完了。&lt;/p&gt;
+
+&lt;p&gt;####IAMユーザ作成
+UsersからCreate New Usersをクリックし作成
+作成したらSecurity Credentialsが表示されダウンロードすることができる。
+この画面を閉じるとこのキーを再度表示されることはできなくなるので、必ずダウンロードする。なくしてしまった際は、一度削除して再度作成する必要がある。
+作成直後は管理コンソールにログインできない。ユーザにパスワードを設定してあげる必要がある。&lt;/p&gt;
+
+&lt;p&gt;####グループ作成
+パスワードを設定しログオンできるようになっても何もできない。それはパーミッションが設定されていないから。
+IAMユーザ単位でパーミッションを設定できるが管理が煩雑になるので、グループを作成しそのグループにパーミッションを与える。個別のIAMアカウントは必要に応じてグループにアサインする。
+Groups からCreate New Groupで作成ができる。
+Group Nameを入力しあらかじめ作成されているAWS Managed Policy から適切なものを選択する。
+最大で10ポリシーまで選択できる。
+カスタムセキュリティポリシーを設定したい場合には、Policiesからカスタムポリシーを作成可能。
+ 設定する際はJSON形式で記載する。&lt;/p&gt;
+
+&lt;p&gt;####Password Policy
+Password PolicyメニューはAccount Settingsに名前が変更になったが、
+中身はPassword Policyのまま、AWSコンソールにアクセスする際のパスワードの長さ、複雑性、有効期限などを設定できる。
+同じパスワードの使い回しを避けるためにも有効期限や、過去の数回のパスワードを設定できないようにするべき。&lt;/p&gt;
+
+&lt;p&gt;####ロール作成
+RolesからCreate New Roleで作成開始。Role Nameを入力しRole Typeを選択、
+Role TypeはAWS Service, Cross-Account AccessとIdentity Provider Accessの三種類がある。
+AWSサービスの権限を設定したい場合は、AWS Service RolesからAWSサービスを選択する。
+Amazon EC2を選択するとEC2からどのAWSサービスへパーミッションを設定したいかAWS Managed Policy一覧が表示され選ぶことができる。&lt;br /&gt;
+&lt;br/&gt;
+&lt;br/&gt;
+以上、AWSを使い始めるにあたり必要最低限のところを勉強して見ました。
+カスタムのセキュリティポリシーはJSON形式で設定できるのですが、テストの範囲ではなさそうなので、ここでは踏み込まないことにしました。
+IAMの機能でActive Directoryと連携して、SSOを構成できるので、次はその仕組みを勉強する予定です。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Leaning AWS for Solution Architect - Associate</title>
+      <link>http://blog.eku.soy/2015/11/17/leaning-aws-for-solution-architect-associate/</link>
+      <pubDate>Tue, 17 Nov 2015 23:37:37 +0000</pubDate>
+      
+      <guid>http://blog.eku.soy/2015/11/17/leaning-aws-for-solution-architect-associate/</guid>
+      <description>&lt;p&gt;AWSのSolution Architectの資格をとるべく勉強を始めました。
+仕事では、EC2, S3, VPC, EC2と基本的なところしか弄ったことがないので、
+もっと理解を深める為に資格をとることにしました。
+試験勉強の教材は&lt;a href=&#34;https://www.udemy.com/aws-certified-solutions-architect-associate-2015/&#34;&gt;Udemyの資格コース&lt;/a&gt;と&lt;a href=&#34;http://aws.amazon.com/jp/aws-jp-introduction/&#34;&gt;AWSのクラウドサービス活用資料&lt;/a&gt;をベースに進めていく計画です。&lt;/p&gt;
+
+&lt;p&gt;１年のFree tierを活用すればそんなに費用がかからずにいろいろと試せると思うので、なるべく手を動かしながら実際の設定を確認しながら勉強していきます。１月くらいに試験を受ける目標にがんばっていく予定。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Rails is programming</title>
+      <link>http://blog.eku.soy/2015/11/05/rails-is-programming/</link>
+      <pubDate>Thu, 05 Nov 2015 08:55:21 +0000</pubDate>
+      
+      <guid>http://blog.eku.soy/2015/11/05/rails-is-programming/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://sorehito.xyz/rails_is_not_programming/&#34;&gt;Ruby on Railsはプログラミングではない&lt;/a&gt;の記事が巷を賑やかせている。
+自分もプログラムの初心者でRailsを勉強していうるけれども、自分はRailsは初心者にも持って来いのフレームワークだなとおもう。&lt;/p&gt;
+
+&lt;p&gt;Railsの良い所はそのフレームワークにベストプラクティスが、詰まっているということだ。
+&lt;a href=&#34;http://david.heinemeierhansson.com/2012/rails-is-omakase.html&#34;&gt;Rails is Omakase&lt;/a&gt;とDHHが言っているが、寿司屋の大将が、その時の旬はネタを握ってくれるように、今のウェブ開発のデファクトスタンダードといってよい技術がRailsには詰まっている。&lt;/p&gt;
+
+&lt;p&gt;初めて触った時に、サンプルのブログやEコマースサイトをスカフォールドで作成すると驚くほど簡単にwebアプリが出来上がる。それにbootstrapを使えばデザインも今風に綺麗に出来てしまう。
+でもそれでwebアプリは終わりじゃない。
+なぜならRailsはフレームワークなのでスタートアップにプロトタイプに早く開発できる環境を提供しているに過ぎない。
+自分のアプリのロジックは自分で考えてプログラミングしなければならない。このアプリケーションのロジックがプログラミングの勉強であってRailsはそこに集中できるようにあくまでレールを提供しているだけなのだ。&lt;/p&gt;
+
+&lt;p&gt;最初はScaffoldingのコマンドでModelからViewまで勝手に作られると何が何だか理解ができなくて、基本的な仕組みを先に理解したい気持ちはわかる。
+もちろん理解するほうが良いの、だけれど最初から全てを理解するのが無理なように初めは動くWebアプリを作成しながら少しずつ理解を深めていく勉強の方が自分は大事だと思う。
+仕事では、開発ではなくてネットワークだったりするけど、最初からTCPのプロトコルだったりベンダー独自の仕様を完全に理解してスイッチやルータを設定をすることはない。設定がうまく行かなかったりトラブルに遭遇したりして、調べることでその仕組をより深く理解できるようになっていく。&lt;/p&gt;
+
+&lt;p&gt;プログラミングも同じこと。
+一番大事なのは続けること。少しづつ理解を深めて機能をより良くすること。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Authenticate pocket api with sinatra 1</title>
+      <link>http://blog.eku.soy/2015/08/27/authenticate-pocket-api-with-sinatra-1/</link>
+      <pubDate>Thu, 27 Aug 2015 00:25:25 +0000</pubDate>
+      
+      <guid>http://blog.eku.soy/2015/08/27/authenticate-pocket-api-with-sinatra-1/</guid>
+      <description>&lt;p&gt;PocketのAPIをたたくためにRubyのSinatraでOath認証するところを試してみた。
+PocketのDeveloper APIページの&lt;a href=&#34;http://getpocket.com/developer/docs/authentication&#34;&gt;Pocket Authentication API Documentation&lt;/a&gt;のところに認証方法が書いてある。&lt;/p&gt;
+
+&lt;p&gt;以下、ドキュメントにそって試していく。
+####[ガイドライン]
+はじめから読んでいくとまずはガイドラインがあり以下が決まっているとのことだ。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;全てのAuthAPIコールはHTTPSで行う。&lt;/li&gt;
+&lt;li&gt;全てのコールはPostで行う。Getはサポートされていない。&lt;/li&gt;
+&lt;li&gt;Content-typeとAcceptは&lt;code&gt;application/x-www-form-urlencoded&lt;/code&gt;か &lt;code&gt;application/json&lt;/code&gt;をサポートする。デフォルトは&lt;code&gt;application/x-www-form-urlencoded&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;文字コードにUTF-8を使用したい場合には&lt;code&gt;Content-Type: application/x-www-form-urlencoded; charset=UTF8&lt;/code&gt;のように指定する。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;####Step 1: Consumer Keyを入手する
+ステップ１はOauthで認証するために必要なconsumer keyを取得する必要があると書かれているので、&lt;a href=&#34;http://getpocket.com/developer/apps/new&#34;&gt;Create a New App&lt;/a&gt;から自分用のKeyを申請し取得する。&lt;br /&gt;
+ここでは、とりあえずTest AppというApplication Nameで申請することにする。&lt;br /&gt;
+Permissionは Retrieveのみにチェックをいれて、PlatformsはWebを選んだ。&lt;br /&gt;
+そうするとMy Appsのところにさっき作ったTest Appがてきてて、Consumer Keyが表示されるのでメモして置く。　　　
+####Step 2: リクエストトークンの入手
+準備が整ったのでOauthでの承認プロセスを始めるわけだが、Consumer Keyと一緒にリクエストトークンが必要になるので以下のリンクからゲットせよとある。
+&lt;a href=&#34;https://getpocket.com/v3/oauth/request&#34;&gt;https://getpocket.com/v3/oauth/request&lt;/a&gt;
+このURLにPostでアクセスをするとリクエストトークンがもらえるらしい。
+アクセスをする際に、&lt;strong&gt;consumer_key&lt;/strong&gt;と&lt;strong&gt;redirect_uri&lt;/strong&gt;の2つのパラメータを指定しなさいとの事だ。&lt;/p&gt;
+
+&lt;p&gt;ではここから、RubyのSinatraを使ってこのステップ2を試してみる。
+まずはSinatra用のファイルを作成し、簡易Webサーバを準備をする。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;require &#39;sinatra&#39;
+require &#39;net/http&#39;
+
+configure do 
+  enable :sessions
+end
+
+get &#39;/&#39; do 
+  &#39;&amp;lt;a href=&amp;quot;/connect&amp;quot;&amp;gt;Connect to the Pocket&amp;lt;/a&amp;gt;&#39;
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;今回は’Net/http’を使ってHTTPリクエストを行う。
+OauthやPocket用のGemはいっぱいあるようだが、勉強のため標準ライブラリを使用することにした。
+実際Gemの&lt;a href=&#34;https://github.com/turadg/pocket-ruby&#34;&gt;pocket-ruby&lt;/a&gt;はConsumerKeyを設定するだけで使いやすいMethodが準備されているのでAPIを叩くところまで簡単に行けるのですが、いまいちOauthの仕組みが理解できなかったのでGemは使用しないことにした。
+とりあえず、ルーティングは簡単にOauthを開始するためのリンクだけを設定する。&lt;/p&gt;
+
+&lt;p&gt;最初のConfigureのところは、Httpで接続したセッションの情報を格納しておくための設定で、このセッションにリクエストトークンなどを保存することになる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ruby&#34;&gt;get &#39;/connect&#39; do 
+uri = URI(&#39;https://getpocket.com/v3/oauth/request&#39;)
+req = Net::HTTP::Post.new(uri)
+req.set_form_data(&#39;consumer_key&#39; =&amp;gt; &#39;your consumer key here&#39;, &#39;redirect_uri&#39; =&amp;gt; &#39;http://localhost:4567/oauth&#39;)
+
+res = Net::HTTP.start(uri.hostname, uri.port, :use_ssl =&amp;gt; uri.scheme == &#39;https&#39;) do |http|
+      http.request(req)
+      end
+result = Hash[URI.decode_www_form(res.body)]
+session[:code] = result[&#39;code&#39;] 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ルートのリンクConnect to the Pocketをクリックすると、リクエストトークを入手するURIにPostのアクセスを行います。&lt;strong&gt;set_form_data&lt;/strong&gt;でパラメータを指定し自分のconsumer keyとリダイレクトURIを記載します。&lt;strong&gt;redirect_uri&lt;/strong&gt;は次のステップ3で使用するアドレスになります。（ここでは/oauthにしています）
+Net::HTTP.startでリクエストを送るとResponseとして&lt;strong&gt;code=dcba4321-dcba-4321-dcba-4321dc&lt;/strong&gt;のようなリクエストトークンが帰ってきます。
+リクエストトークンではなくCodeという名前で帰ってきますので、この値だけをSessionに保存してステップ２は完了。&lt;/p&gt;
+
+&lt;p&gt;続きは次回。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>TCP and the Lower Bound of Web Performance</title>
+      <link>http://blog.eku.soy/2015/07/27/tcp-and-the-lower-bound-of-web-performance/</link>
+      <pubDate>Mon, 27 Jul 2015 21:23:20 +0000</pubDate>
+      
+      <guid>http://blog.eku.soy/2015/07/27/tcp-and-the-lower-bound-of-web-performance/</guid>
+      <description>&lt;p&gt;Velocity Conf 2015のJohn Rauserのトーク &lt;a href=&#34;https://www.youtube.com/watch?v=C8orjQLacTo/&#34;&gt;TCP and the Lower Bound of Web Performance&lt;/a&gt;を見た。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.youtube.com/watch?v=C8orjQLacTo&#34;&gt;&lt;img src=&#34;http://img.youtube.com/vi/C8orjQLacTo/0.jpg&#34; alt=&#34;Youyube video image&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;USの西海岸がら東海岸へのLatencyのあるネットワーク環境を例に、TCPの誕生からプロトコル変遷の歴史をたどりながら、Latancyがある環境では実際にWebアクセスへのパフォーマンスどの程度時間がかかるのか解説。なかなか面白く勉強になった。
+トークを見てから初めてTCP Slow startの実装とか採用された経緯知って、WindowサイズやMSSをしっかり把握して、何回目のRound Tripでデータ転送が終了するのか理解するのは重要だなと感じた。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Keeping the motivation</title>
+      <link>http://blog.eku.soy/2015/05/13/keeping-the-motivation/</link>
+      <pubDate>Wed, 13 May 2015 23:50:05 +0000</pubDate>
+      
+      <guid>http://blog.eku.soy/2015/05/13/keeping-the-motivation/</guid>
+      <description>&lt;p&gt;少し前に&lt;a href=&#34;http://blog.donnywals.com/consistency-and-discipline-over-motivation/?utm_source=hackernewsletter&amp;amp;utm_medium=email&amp;amp;utm_term=fav&#34;&gt;Consistency and discipline over motivation&lt;/a&gt;という記事を読んで、普段からだらだらしているの仕事に適用してみた。
+記事としてはプログラマが継続してコーディングする為にはモチベーションではなくて、規律と一貫性が必要というもの。
+僕の場合は、プログラマーではないのだが普段の仕事へのモチベーションがないときは、全く仕事の効率が良くない。
+集中できた時は２−３時間はあっという間だが、バラバラとまとまっていないタスクをこなさなければならない時は、ほんとに効率が悪くなっている。
+また、メインのプロジェクトが忙しいとやらなければならない小さなタスクがほって置かれたりと仕事にムラがある状態が続いたりもする。
+モチベーションが無いときは、目の前にやることがいくらでも見つかるのに、ネットを見たり同僚と世間話をしたりしてしまう。
+それでちょと前から仕事でこのルーチンで行ってみている。
+まあそんなに本格的ではないのだけれども、すぐ終わるタスクは２−３ためておき、集中してやらなければならないタスクのあとの休憩後に１０−１５でバシッと済ませるようにする。
+僕の場合は40−45分くらい作業しているとたいてい邪魔が入るので、そこで休憩の意味も含めて作業を区切り休んでいる間に今後のタスクリストの整理をする。
+あまり集中し過ぎて突っ走らないように必ず休憩を入れるのも確かに重要だと感じた。
+iPhoneアプリでタイマーをセットしなるべくこれをローテーションするようにしている。
+まだまだ、体に馴染んでいないけれども続けていくようにする。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Age of 36</title>
+      <link>http://blog.eku.soy/2015/04/07/age-of-36/</link>
+      <pubDate>Tue, 07 Apr 2015 22:12:40 +0000</pubDate>
+      
+      <guid>http://blog.eku.soy/2015/04/07/age-of-36/</guid>
+      <description>&lt;p&gt;今年で36になって、初めて子供が生まれて色々と環境が変わった。
+イギリスで家も買ったし、奥さんも専業主婦になった。
+これまでなんとなく生活出来てきたけれどこれからは家族を養っていく責任がある。
+まえ、糸井重里が言っていたけど40歳になってから新しいことを始めたら人生の後半でそれが新しい芽をだして
+いろいろなことが広がったそうだ。
+これから始めるブログはそういう意味で新しいことの初めの一歩になれば良いと思っている。
+ブログのタイトルはFinding Nemoのドリーからもらいました。
+主にインフラ系エンジニアがプログラムを勉強しているブログです。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="yadachi">
+  <meta name="generator" content="Hugo 0.18.1" />
+  <title>S3(Simple Storage Service)の基本 — Just Keep Swimming</title>
+
+  <meta name="description" content="">
+  <link rel="canonical" href="http://blog.eku.soy/2016/01/22/aws-s3-basics/">
+  <link href="" rel="alternate" type="application/rss+xml" title="Just Keep Swimming">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Arvo:400,700">
+  <link rel="stylesheet" href="http://blog.eku.soycss/highlight.css">
+  <link rel="stylesheet" href="http://blog.eku.soycss/paperback.css">
+</head>
+
+
+  <body>
+    <div class="container">
+
+      <header>
+  <h1>S3(Simple Storage Service)の基本</h1>
+
+  
+  <time datetime="2016-01-22 22:17:38 &#43;0000 UTC">2016/01/22</time>
+  
+
+  
+</header>
+
+
+      <article>
+        <p>今回はAWSのS3ストレージサービスの基本となる情報で、試験に出そうなところをまとめる。</p>
+
+<p>###概要</p>
+
+<ul>
+<li>S3はオブジェクトベースのストレージ、フラットファイルのみ保存が可能という意味。OSやデータベースは保存不可能(ブロックベースのストレージが必要)。</li>
+<li>容量は無制限、1ファイル1Byte から5TBまで保存可能。</li>
+<li>ファイルはバケットというフォルダに保存する。</li>
+<li>バケットはユニバーサルにユニークなアドレスをつける必要がある。</li>
+<li>デフォルトでは100バケットまで作成可能(それ以上はAWSにリクエストする必要がある)</li>
+<li>可用性は99.99%指定したリージョンのすべてのAvailability zoneに自動的に複製される。<br />
+2拠点のAZが機能不全になってもアクセスが可能なデザイン。</li>
+<li>高い堅牢性を誇る。99.999999999％(9.11と覚える)、複数のデバイス/AZにコピーされる。</li>
+<li>Life cycle管理と、バージョン管理が可能</li>
+<li>ファイルをアップロード後、他のデバイスにコピーされるまで読み書きはできない。</li>
+<li>ファイルの更新も変更がコピーされる時間が発生するので、アプリ側からファイルを読む際には、それを考慮する必要がある。
+<br /></li>
+</ul>
+
+<p>通常のS3は標準クラスのストレージを使用するが、アクセス頻度が少ないファイルや高い堅牢性が必要ないデータの為に、その他に3つのストレージクラスを提供している。</p>
+
+<p>###ストレージクラス<br />
+- Reduced Redundancy Storage<br />
+可用性はS3と同じだが堅牢性は99.99％。これは1万個のファイルを保存すると、1年で1ファイルが失う計算。AZにコピーされるが1拠点の障害までしか対応できないデザイン。
+- Glacier
+S3と同じ堅牢性の99.999999999％を提供している。
+データの長期アーカイブ目的で使用する。料金がS3のスタンダードよりも格段に安いがデータの取り出しに通常3-5時間を要する。
+- IA(infrequent access)ストレージ<br />
+最近リリースされたストレージタイプで、通常のS3標準クラスと同じ可用性/堅牢性を提供するがアクセス頻度が少ないデータをターゲットにしている。ただしGlacierと違いデータの読み出しが早い事が特徴のストレージクラスとなる。データの取り出しに別途料金が発生する。</p>
+
+<p>次回はバージョニングとライフサイクルマネジメントを勉強します。</p>
+
+      </article>
+
+      <nav class="site-nav">
+  <a href="http://blog.eku.soy">Home</a>
+  <a href="http://blog.eku.soypost/">All posts</a>
+
+  
+
+    
+
+</nav>
+
+
+      <footer class="site-footer">
+  <span class="owner">©2016 yadachi</span>
+
+  
+</footer>
+
+
+    </div>
+
+  
+<script src="http://blog.eku.soyjs/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+  </body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="yadachi">
+  <meta name="generator" content="Hugo 0.18.1" />
+  <title>AWS CND CloudFront — Just Keep Swimming</title>
+
+  <meta name="description" content="">
+  <link rel="canonical" href="http://blog.eku.soy/2016/01/28/aws-cdn-cloudfront/">
+  <link href="" rel="alternate" type="application/rss+xml" title="Just Keep Swimming">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Arvo:400,700">
+  <link rel="stylesheet" href="http://blog.eku.soycss/highlight.css">
+  <link rel="stylesheet" href="http://blog.eku.soycss/paperback.css">
+</head>
+
+
+  <body>
+    <div class="container">
+
+      <header>
+  <h1>AWS CND CloudFront</h1>
+
+  
+  <time datetime="2016-01-28 00:26:03 &#43;0000 UTC">2016/01/28</time>
+  
+
+  
+</header>
+
+
+      <article>
+        <p>今回はAWSのCDNサービスであるCloudFrontを勉強していきます。</p>
+
+<p>AWSはリージョンとそのAZゾーンが世界各地にありますが、CDNとして全世界をカバーするには拠点が足りません。
+そのためCDN専用の拠点としてエッジロケーションと呼ばれる場所があります。
+この拠点は、AWSのリージョンにあるAZゾーンとは別にコンテンツの配布場所として全世界で50ヶ所以上用意されています。</p>
+
+<p>さっそくCloudFrontを作ってみると、
+最初に新規作成するとコンテンツタイプを2つの中から選ぶことになります。</p>
+
+<ul>
+<li><p>Web<br />
+Webサーバで使用するコンテンツ。通常のHTMLファイル等はこれを使用する。</p></li>
+
+<li><p>RTMP<br />
+Adobe flash等のストリーミングを配信する場合はこのRTMPを使用する。</p></li>
+</ul>
+
+<p><img src="/images/AWS-S3/CloudFront-1.png" alt="CloudFront-Deliverymethod" title="CloudFront-Deliverymethod" /></p>
+
+<p>コンテンツタイプを選んで次のページに行くと実際の設定ができます。</p>
+
+<ul>
+<li>Origin Setting
+コンテンツのオリジナルとなるサーバ。AWSではS3バケット､EC2インスタンス、ElasticロードバランサーかRoute53が使用可能です。
+カーソルをドメイン名に移動すると自動的にS3のバケット名が出てきて簡単に選ぶことができます。またAWS以外のサービスでももちろんAWSのCDNを使用することは可能です。<br />
+Origin IDはデフォルトでバケット名が入力されますが、マルチオリジンの配布をする場合にはIDをわかるように設定する必要があります。<br /></li>
+</ul>
+
+<p><img src="/images/AWS-S3/CloudFront-2.png" alt="CloudFront-OriginSettings" title="CloudFront-OriginSettings" /></p>
+
+<ul>
+<li>Default Cache Behavior Settings
+パスパターンはデフォルトではワイルドカードですが、拡張子を選択しPDFのみを配布するだとか設定できます。<br />
+CDNへのアクセスプロトコルとHTTPのメソッドを指定することが可能で、PUTやPOSTも受け付けるので、CDNへの変更も許可することが可能です。
+また、カスタムでTTLの設定が可能です。デフォルトは24時となっていますが変更が可能です。<br />
+CloudFrontはこのTTLが来ると自動的にコンテンツが削除され、再度アクセスが来るとオリジナルからコピーして配布する仕組みとなっています。<br />
+Restrict viewer accessはログインしてアクセスが必要なサイト等で使用される機能で必要な場合には有効にする必要があります。<br /></li>
+</ul>
+
+<p><img src="/images/AWS-S3/CloudFront-3.png" alt="CloudFront-CacheBehaviorSettings" title="CloudFront-CacheBehaviorSettings" /></p>
+
+<ul>
+<li>Distribution 設定
+PriceクラスでCloudFrontのEdge Locationをカテゴリーで決められます。３つあって全世界とアメリカ、ヨーロッパとアメリカ、ヨーロッパとアジアから選べます。<br />
+CDNのアドレスはランダムなURLがアサインされるので、CNAMEを指定することができます。<br />
+またその際に必要なカスタム証明書を合わせて設定することができます。<br /></li>
+</ul>
+
+<p><img src="/images/AWS-S3/CloudFront-4.png" alt="CloudFront-DistributionSettings" title="CloudFront-DistributionSettings" /></p>
+
+<p>作成するとディストリビューションに表示されます。配布の準備が整うまでしばらく<code>In Progress</code>状態で待ちますが、</p>
+
+<p><img src="/images/AWS-S3/CloudFront-5.png" alt="CloudFront-In-Progress" title="CloudFront-In-Progress" /></p>
+
+<p>10-15分ほどすれば<code>Deployed</code>になります。</p>
+
+<p><img src="/images/AWS-S3/CloudFront-6.png" alt="CloudFront-Deployed" title="CloudFront-Deployed" /></p>
+
+<p>完了したら、CDN用のcroudfron.net Domain Nameでアクセスができます。</p>
+
+<p>設定変更画面で作成したCDN配布設定を再度変更できます。
+作成する際になかったRestrictionsとInvalidationsを見てみましょう。</p>
+
+<p><img src="/images/AWS-S3/CloudFront-7.png" alt="CloudFront-SettingsChange" title="CloudFront-SettingsChange" /></p>
+
+<p>Restrictionsはジオリストリクションが設定でき編集ボタンからジオリストリクションを有効にすると、特定の地域をホワイトリストかブラックリストで指定することができ、指定した地域のみに配布または配布から除外する設定が可能です。</p>
+
+<p><img src="/images/AWS-S3/CloudFront-8.png" alt="CloudFrontGeoRestriction" title="CloudFront-GeoRestriction" /></p>
+
+<p>Invalidationsは配布したファイルをTTLの削除時間が来る前に手動で削除する際に使用します。
+特定をファイルを指定すると、そのファイルが即座に削除対象になります。
+手動での削除は別途料金がかかります。</p>
+
+<p><img src="/images/AWS-S3/CloudFront-9.png" alt="CloudFront-Invalidations" title="CloudFront-Invalidations" /></p>
+
+<p>最後に削除する場合には、一度DisableをクリックしてDisabled状態になってからでないと、削除ボタンが押せません。Disableにして再度設定が反映されてからようやく削除ボタンが押せるようになります。</p>
+
+<p><img src="/images/AWS-S3/CloudFront-10.png" alt="CloudFront-Delete" title="CloudFront-Delete" /></p>
+
+<p>以上、ちょっと急ぎ足ですがCloudFrontの概要と使い方がわかったかと思います。
+時間があったらもうちょっとアップデートしたいと思います。</p>
+
+      </article>
+
+      <nav class="site-nav">
+  <a href="http://blog.eku.soy">Home</a>
+  <a href="http://blog.eku.soypost/">All posts</a>
+
+  
+
+    
+
+</nav>
+
+
+      <footer class="site-footer">
+  <span class="owner">©2016 yadachi</span>
+
+  
+</footer>
+
+
+    </div>
+
+  
+<script src="http://blog.eku.soyjs/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+  </body>
+</html>

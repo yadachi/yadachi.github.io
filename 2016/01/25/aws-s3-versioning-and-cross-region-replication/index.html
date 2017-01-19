@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="yadachi">
+  <meta name="generator" content="Hugo 0.18.1" />
+  <title>S3 バージョニングとクロスリージョンレプリケーション — Just Keep Swimming</title>
+
+  <meta name="description" content="">
+  <link rel="canonical" href="http://blog.eku.soy/2016/01/25/aws-s3-versioning-and-cross-region-replication/">
+  <link href="" rel="alternate" type="application/rss+xml" title="Just Keep Swimming">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Arvo:400,700">
+  <link rel="stylesheet" href="http://blog.eku.soycss/highlight.css">
+  <link rel="stylesheet" href="http://blog.eku.soycss/paperback.css">
+</head>
+
+
+  <body>
+    <div class="container">
+
+      <header>
+  <h1>S3 バージョニングとクロスリージョンレプリケーション</h1>
+
+  
+  <time datetime="2016-01-25 23:04:41 &#43;0000 UTC">2016/01/25</time>
+  
+
+  
+</header>
+
+
+      <article>
+        <p>前回に続きS3の機能を見ていきますが、
+今回はS3のバージョニング機能の使い方とライフサイクルを中心に勉強していきます。</p>
+
+<p>###S3バージョニング機能</p>
+
+<p>バージョニング機能を有効にすると変更を保存してくれてどのバージョンのファイルでもアクセスできるようになります。
+バージョニング機能を使うのは至って簡単で、バケットのプロパティのバージョニング項目からバージョニングを有効にするボタンをクリックするだけです。ただし注意なければいけないのは、一度有効にすると無効にできないので必要か考慮してから有効にしましょう。</p>
+
+<p><img src="/images/AWS-S3/AWS-S3-versioning-1.png" alt="Enable versioning" title="Enable versioning" /></p>
+
+<p>さて、バージョニングを有効にしたら、バージョン管理を実際に試してみます。
+1つファイルをアップロードしてみるとバージョンのタブでバージョン作成時、バージョンID、サイズが確認できます。</p>
+
+<p><img src="/images/AWS-S3/AWS-S3-versioning-2.png" alt="Show versioning" title="Show versioning" /></p>
+
+<p>同じファイルを編集して再度アップロードすると、変更したファイルとオリジナルファイルが並んで確認できます。
+バージョン作成時、IDとサイズが違うのが確認できます。ちゃんとバージョン管理ができていますね。</p>
+
+<p><img src="/images/AWS-S3/AWS-S3-versioning-3.png" alt="versioning detail" title="versioning detail" /></p>
+
+<p>試しにバージョンタブを隠してファイルを削除してみます。そうするとバケットからはindex.htmlファイルは削除されますが
+、バージョンを表示するとバージン管理されたファイルが残っているのが分かります。ファイルを見るとわかりますが実際には削除されていなくて削除マークが付いているだけです。</p>
+
+<p><img src="/images/AWS-S3/AWS-S3-versioning-4.png" alt="Delete Marker" title="Delete Marker" /></p>
+
+<p>削除したファイルを戻したい場合には、削除マークが付いているファイルをアクションメニューから削除すれば、もとに戻すことができます。
+また、バージョン詳細の画面で、ファイルを削除するとそのバージョンのファイルを削除したことになり、1つ前のバージョンのファイルにリバートすることになります。削除マークはつかずに永久的にに削除されますので注意が必要です。</p>
+
+<p>バージョニングは間違って削除してしまったり変更管理に大変便利ですが、全てのバージョンファイルのサイズが使用料として課金ます。
+ですので、例えば上のバージョンファイルの例ですと、546バイトと614バイトの2つのファイルを保存している事になります。これが1GBのファイルとなると2GB使用していることになりますので、ファイルサイズが大きい場合には注意する必要があります。</p>
+
+<p>###クロスリージョンレプリケーション
+クロスリージョンレプリケーションを有効にすると、S3に保存んしたファイルが別の任意のリージョンにコピーされるようになります。
+使用するにはバージョニングを有効にしておく必要があります。
+複製先のリージョンとバケットを選び、セキュリティアクセスロールを選びます。
+ロールはIAMで勉強しましたが、リソースにアクセス権を付与できるセキュリティポリシーです。</p>
+
+<p><img src="/images/AWS-S3/AWS-S3-versioning-5.png" alt="Cross-Region-Replication" title="Cross-Region-Replication" /></p>
+
+<p>ロールが何もない場合には、新規作成して設定することができます。IAMロールは新しく作成すると自動的に、複製元と複製先のみアクセスが許可されたロールが作成されるので毎回個別に作成すると良いでしょう。</p>
+
+<p><img src="/images/AWS-S3/AWS-S3-versioning-6.png" alt="AM role for replication" title="IAM role for replication" /></p>
+
+<p>設定が完了するとバックアップ用のバケットが作成されて、新規にアップロードされたファイルから複製されていきます。</p>
+
+<p><img src="/images/AWS-S3/AWS-S3-versioning-7.png" alt="New bucket on destination region" title="New bucket on destination region" /></p>
+
+<p>有効後のファイルからのみ自動でコピーされるので、すでに保存されているファイルに関しては手動でコピーする必要があります。(<a href="http://docs.aws.amazon.com/AmazonS3/latest/API/RESTObjectCOPY.html">Copy API</a>を使用可能。)
+2つのバケットにファイルを保存するので、その分の料金が発生します、また転送した分のデータ通信も費用が発生します。費用を抑えるために、複製先はストレージタイプを、RRSにすることも可能です。またライフサイクルを有効にしてGlacierに移動することも可能です。</p>
+
+      </article>
+
+      <nav class="site-nav">
+  <a href="http://blog.eku.soy">Home</a>
+  <a href="http://blog.eku.soypost/">All posts</a>
+
+  
+
+    
+
+</nav>
+
+
+      <footer class="site-footer">
+  <span class="owner">©2016 yadachi</span>
+
+  
+</footer>
+
+
+    </div>
+
+  
+<script src="http://blog.eku.soyjs/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+  </body>
+</html>

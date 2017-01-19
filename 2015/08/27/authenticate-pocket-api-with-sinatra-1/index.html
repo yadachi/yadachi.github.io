@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="yadachi">
+  <meta name="generator" content="Hugo 0.18.1" />
+  <title>Authenticate pocket api with sinatra 1 — Just Keep Swimming</title>
+
+  <meta name="description" content="">
+  <link rel="canonical" href="http://blog.eku.soy/2015/08/27/authenticate-pocket-api-with-sinatra-1/">
+  <link href="" rel="alternate" type="application/rss+xml" title="Just Keep Swimming">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Arvo:400,700">
+  <link rel="stylesheet" href="http://blog.eku.soycss/highlight.css">
+  <link rel="stylesheet" href="http://blog.eku.soycss/paperback.css">
+</head>
+
+
+  <body>
+    <div class="container">
+
+      <header>
+  <h1>Authenticate pocket api with sinatra 1</h1>
+
+  
+  <time datetime="2015-08-27 00:25:25 &#43;0000 UTC">2015/08/27</time>
+  
+
+  
+</header>
+
+
+      <article>
+        <p>PocketのAPIをたたくためにRubyのSinatraでOath認証するところを試してみた。
+PocketのDeveloper APIページの<a href="http://getpocket.com/developer/docs/authentication">Pocket Authentication API Documentation</a>のところに認証方法が書いてある。</p>
+
+<p>以下、ドキュメントにそって試していく。
+####[ガイドライン]
+はじめから読んでいくとまずはガイドラインがあり以下が決まっているとのことだ。</p>
+
+<ul>
+<li>全てのAuthAPIコールはHTTPSで行う。</li>
+<li>全てのコールはPostで行う。Getはサポートされていない。</li>
+<li>Content-typeとAcceptは<code>application/x-www-form-urlencoded</code>か <code>application/json</code>をサポートする。デフォルトは<code>application/x-www-form-urlencoded</code></li>
+<li>文字コードにUTF-8を使用したい場合には<code>Content-Type: application/x-www-form-urlencoded; charset=UTF8</code>のように指定する。</li>
+</ul>
+
+<p>####Step 1: Consumer Keyを入手する
+ステップ１はOauthで認証するために必要なconsumer keyを取得する必要があると書かれているので、<a href="http://getpocket.com/developer/apps/new">Create a New App</a>から自分用のKeyを申請し取得する。<br />
+ここでは、とりあえずTest AppというApplication Nameで申請することにする。<br />
+Permissionは Retrieveのみにチェックをいれて、PlatformsはWebを選んだ。<br />
+そうするとMy Appsのところにさっき作ったTest Appがてきてて、Consumer Keyが表示されるのでメモして置く。　　　
+####Step 2: リクエストトークンの入手
+準備が整ったのでOauthでの承認プロセスを始めるわけだが、Consumer Keyと一緒にリクエストトークンが必要になるので以下のリンクからゲットせよとある。
+<a href="https://getpocket.com/v3/oauth/request">https://getpocket.com/v3/oauth/request</a>
+このURLにPostでアクセスをするとリクエストトークンがもらえるらしい。
+アクセスをする際に、<strong>consumer_key</strong>と<strong>redirect_uri</strong>の2つのパラメータを指定しなさいとの事だ。</p>
+
+<p>ではここから、RubyのSinatraを使ってこのステップ2を試してみる。
+まずはSinatra用のファイルを作成し、簡易Webサーバを準備をする。</p>
+
+<pre><code class="language-ruby">require 'sinatra'
+require 'net/http'
+
+configure do 
+  enable :sessions
+end
+
+get '/' do 
+  '&lt;a href=&quot;/connect&quot;&gt;Connect to the Pocket&lt;/a&gt;'
+end
+</code></pre>
+
+<p>今回は’Net/http’を使ってHTTPリクエストを行う。
+OauthやPocket用のGemはいっぱいあるようだが、勉強のため標準ライブラリを使用することにした。
+実際Gemの<a href="https://github.com/turadg/pocket-ruby">pocket-ruby</a>はConsumerKeyを設定するだけで使いやすいMethodが準備されているのでAPIを叩くところまで簡単に行けるのですが、いまいちOauthの仕組みが理解できなかったのでGemは使用しないことにした。
+とりあえず、ルーティングは簡単にOauthを開始するためのリンクだけを設定する。</p>
+
+<p>最初のConfigureのところは、Httpで接続したセッションの情報を格納しておくための設定で、このセッションにリクエストトークンなどを保存することになる。</p>
+
+<pre><code class="language-ruby">get '/connect' do 
+uri = URI('https://getpocket.com/v3/oauth/request')
+req = Net::HTTP::Post.new(uri)
+req.set_form_data('consumer_key' =&gt; 'your consumer key here', 'redirect_uri' =&gt; 'http://localhost:4567/oauth')
+
+res = Net::HTTP.start(uri.hostname, uri.port, :use_ssl =&gt; uri.scheme == 'https') do |http|
+      http.request(req)
+      end
+result = Hash[URI.decode_www_form(res.body)]
+session[:code] = result['code'] 
+</code></pre>
+
+<p>ルートのリンクConnect to the Pocketをクリックすると、リクエストトークを入手するURIにPostのアクセスを行います。<strong>set_form_data</strong>でパラメータを指定し自分のconsumer keyとリダイレクトURIを記載します。<strong>redirect_uri</strong>は次のステップ3で使用するアドレスになります。（ここでは/oauthにしています）
+Net::HTTP.startでリクエストを送るとResponseとして<strong>code=dcba4321-dcba-4321-dcba-4321dc</strong>のようなリクエストトークンが帰ってきます。
+リクエストトークンではなくCodeという名前で帰ってきますので、この値だけをSessionに保存してステップ２は完了。</p>
+
+<p>続きは次回。</p>
+
+      </article>
+
+      <nav class="site-nav">
+  <a href="http://blog.eku.soy">Home</a>
+  <a href="http://blog.eku.soypost/">All posts</a>
+
+  
+
+    
+
+</nav>
+
+
+      <footer class="site-footer">
+  <span class="owner">©2016 yadachi</span>
+
+  
+</footer>
+
+
+    </div>
+
+  
+<script src="http://blog.eku.soyjs/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+  </body>
+</html>

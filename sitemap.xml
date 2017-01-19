@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>http://blog.eku.soy/2017/01/04/rust-study-day1/</loc>
+    <lastmod>2017-01-04T00:23:30+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.eku.soy/2016/01/28/aws-cdn-cloudfront/</loc>
+    <lastmod>2016-01-28T00:26:03+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.eku.soy/2016/01/26/aws-s3-lifecycle-management/</loc>
+    <lastmod>2016-01-26T00:33:38+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.eku.soy/2016/01/25/aws-s3-versioning-and-cross-region-replication/</loc>
+    <lastmod>2016-01-25T23:04:41+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.eku.soy/2016/01/22/aws-s3-basics/</loc>
+    <lastmod>2016-01-22T22:17:38+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.eku.soy/2016/01/21/2016-new-years-resolution/</loc>
+    <lastmod>2016-01-21T00:46:56+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.eku.soy/2015/11/19/identity-and-access-management-part-2/</loc>
+    <lastmod>2015-11-19T06:47:58+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.eku.soy/2015/11/18/identity-and-access-management-part-1/</loc>
+    <lastmod>2015-11-18T22:26:19+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.eku.soy/2015/11/17/leaning-aws-for-solution-architect-associate/</loc>
+    <lastmod>2015-11-17T23:37:37+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.eku.soy/2015/11/05/rails-is-programming/</loc>
+    <lastmod>2015-11-05T08:55:21+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.eku.soy/2015/08/27/authenticate-pocket-api-with-sinatra-1/</loc>
+    <lastmod>2015-08-27T00:25:25+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.eku.soy/2015/07/27/tcp-and-the-lower-bound-of-web-performance/</loc>
+    <lastmod>2015-07-27T21:23:20+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.eku.soy/2015/05/13/keeping-the-motivation/</loc>
+    <lastmod>2015-05-13T23:50:05+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.eku.soy/2015/04/07/age-of-36/</loc>
+    <lastmod>2015-04-07T22:12:40+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.eku.soy/</loc>
+    <lastmod>2017-01-04T00:23:30+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.eku.soy/post/</loc>
+    <lastmod>2017-01-04T00:23:30+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+</urlset>

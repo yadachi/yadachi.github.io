@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="yadachi">
+  <meta name="generator" content="Hugo 0.18.1" />
+  <title>Identity &amp;amp; Access Management Part 2 — Just Keep Swimming</title>
+
+  <meta name="description" content="">
+  <link rel="canonical" href="http://blog.eku.soy/2015/11/19/identity-and-access-management-part-2/">
+  <link href="" rel="alternate" type="application/rss+xml" title="Just Keep Swimming">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Arvo:400,700">
+  <link rel="stylesheet" href="http://blog.eku.soycss/highlight.css">
+  <link rel="stylesheet" href="http://blog.eku.soycss/paperback.css">
+</head>
+
+
+  <body>
+    <div class="container">
+
+      <header>
+  <h1>Identity &amp;amp; Access Management Part 2</h1>
+
+  
+  <time datetime="2015-11-19 06:47:58 &#43;0000 UTC">2015/11/19</time>
+  
+
+  
+</header>
+
+
+      <article>
+        <p>###Identity Federation</p>
+
+<p>Solution Architect アソシエイトの試験にどこまで詳細に出るかわかりませんが、概要はわかっていたほうが良いと思うので、
+連携の仕組みを理解しておこうと思います。</p>
+
+<p>Identity FederationとはID連携のことで、簡単に説明するとAWSアカウントのユーザを他の認証機関と連携できるようになるということです。つまりはSSOを実現できる機能になります。
+エンタープライズユーザはIAMユーザをたくさん管理する必要があると想像に難くないと思いますが、
+そのID管理をすでにオンプレミスにあるActive Directoryと連携しSSOを行うようにできます。</p>
+
+<p>ADとAWSの連携には、SAML（Security Assertion Markup Language)が使われるのですが、素のActive DirectoryはKerberos認証なので、SAMLを扱えるAD FSを構築する必要があります。AWSと連携するのでAD FSをDMZ等に構築しAWSのAPIと通信できるようにしておきます。
+Active Directoryとの連携とユーザがAWSコンソールの認証をえるフローをわかりやすく説明しているのがAWSのブログ記事にあり、以下この図のフローがとてもわかり易いと思います。</p>
+
+<p><a href="http://aws.typepad.com/aws_japan/2013/11/aws-identity-and-access-management-using-saml.html"><img src="http://media.amazonwebservices.com/blog/2013/iam_saml_flow_2.png" alt="IAM SAMLフロー" /></a></p>
+
+<p>重要なのは、ID連携にはSAMLが使用されることと、AWSコンソールの認証ははじめにAWSにアクセスするのではなくて、AD FSのポータルでActive Directoryに対して認証しグラントされたら、AWSにリダイレクトされるというフローです。</p>
+
+<p>詳細な、SAMLでの連携は<a href="http://www.slideshare.net/AmazonWebServicesJapan/20150617-aws-blackbeltiam">AWS Black Belt Tech Webinar スライド</a>に解説してあるので、時間があるときに見てみることにします。</p>
+
+      </article>
+
+      <nav class="site-nav">
+  <a href="http://blog.eku.soy">Home</a>
+  <a href="http://blog.eku.soypost/">All posts</a>
+
+  
+
+    
+
+</nav>
+
+
+      <footer class="site-footer">
+  <span class="owner">©2016 yadachi</span>
+
+  
+</footer>
+
+
+    </div>
+
+  
+<script src="http://blog.eku.soyjs/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+  </body>
+</html>

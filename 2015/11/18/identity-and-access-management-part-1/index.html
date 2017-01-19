@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="yadachi">
+  <meta name="generator" content="Hugo 0.18.1" />
+  <title>Identity &amp;amp; Access Management (IAM) Part 1 — Just Keep Swimming</title>
+
+  <meta name="description" content="">
+  <link rel="canonical" href="http://blog.eku.soy/2015/11/18/identity-and-access-management-part-1/">
+  <link href="" rel="alternate" type="application/rss+xml" title="Just Keep Swimming">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Arvo:400,700">
+  <link rel="stylesheet" href="http://blog.eku.soycss/highlight.css">
+  <link rel="stylesheet" href="http://blog.eku.soycss/paperback.css">
+</head>
+
+
+  <body>
+    <div class="container">
+
+      <header>
+  <h1>Identity &amp;amp; Access Management (IAM) Part 1</h1>
+
+  
+  <time datetime="2015-11-18 22:26:19 &#43;0000 UTC">2015/11/18</time>
+  
+
+  
+</header>
+
+
+      <article>
+        <p>Identity &amp; Access Management 略してIAMはAWSコンソールにアクセスするユーザのアカウント管理するサービス。
+IAMを一番最初に勉強していきます。どうして一番最初に勉強するかと言うと、
+AWSのサービスを使うにはアカウントを作成しすぐにEC2やS3を使いはじめることができますが、
+デフォルトのルートアカウントで作業をしているとそのアカウント情報が流出してしまうと、
+リソースを使い放題され自分に支払いが回ってきますので、まずはIAMでルート以外のアカウントを作成し作業をすることを勧めます。</p>
+
+<p>###主な機能</p>
+
+<ul>
+<li>AWSアカウントの一元管理</li>
+<li>既存のActivie Directoryと統合しSSO(Single Sign On)を提供</li>
+<li>AWSリソースへのきめ細かなアクセス権管理</li>
+<li>ユーザ/グループ/ロールでのアクセス管理を提供</li>
+<li>2要素認証を提供</li>
+<li>ユーザへのテンポラリーアクセス権の提供</li>
+<li>パスワードポリシーの設定</li>
+</ul>
+
+<p>###概要</p>
+
+<p>####IAM ユーザ
+AWSコンソールへのアクセスに使用することができます。
+AWSの1アカウントにつき5000ユーザまで作成が可能です。
+最大で10のグループまで所属可能。</p>
+
+<p>####グループ
+AWSの1アカウントにつき100まで作成可能。
+作成したユーザを所属させ、グループごとにパーミッションを付与させることができる。</p>
+
+<p>####ロール
+グループと似ているけれども、AWSのサービスからサービスへのパーミッションを設定可能。
+例えばEC2からS3へアクセスを許可する場合などに使用することで、IAMユーザのクレデンシャルをOSやアプリケーションに持たせる必要がないため、
+アカウント情報の漏えいリスクが軽減できる。</p>
+
+<p>###ハンズオン</p>
+
+<p>サービス一覧からSecurity &amp; Identity カテゴリにあるIdentity&amp; Access Management を選択する。
+Dashboard画面がひらき、IAM ResourcesやSecurity Statusが確認できる。
+一番上にある<strong>IAM users sign-in link</strong>は、自分のAWSコンソールにIAMユーザがアクセスする際のURLになる。
+デフォルトのアドレスはランダムなものなので、Customizeからエイリアス名を設定できわかりやすいアドレスに変更ができる。</p>
+
+<p>ダッシュボード下にはSecurity Status画面が表示されている。はじめはStatusがDelete your Root access Keys以外はオレンジになっている。
+RootKeyはデフォルトで新規アカウントは削除されるので緑色。
+その他４つを実施することを進められる。
+以下４つのレコメンデーション</p>
+
+<ul>
+<li>RootアカウントでのMulti Factor Authenticationを有効化（Rootは２段階認証を実施し他人がRootアカウントでログイン出来ないようにする）</li>
+<li>個別のIAM ユーザアカウントの作成。(Rootでの作業はしない）</li>
+<li>グループを作成して権限を付与する。</li>
+<li>IAMアカウントへのパスワードポリシーの有効化</li>
+</ul>
+
+<p>####MFA設定
+一番最初はルートアカウントにMFAを使用するようにする。
+ダッシュボードの二番目をクリックして設定をすすめる。
+Virtual MFA Device（アプリベース）かHardware MFA Device (USBキーなど）を使用するか選ぶ。
+ここではスマートフォンにアプリをインストールしてMFAができるようにしたいので、Virtual MFA Deviceを選択する。AWSと自分のアプリをシンクする前に、MFA用アプリをインストールして準備しておくようにメッセージがでるので、アプリの準備をしておく。
+QRコードが画面にでるので、MFAアプリを起動しスキャナで読み取る。
+ワンタイムPINが表示されたら、２回続けてCode1とCode2に入力しActivate Virtual MFAをクリックする。
+サクセスできたら設定完了。</p>
+
+<p>####IAMユーザ作成
+UsersからCreate New Usersをクリックし作成
+作成したらSecurity Credentialsが表示されダウンロードすることができる。
+この画面を閉じるとこのキーを再度表示されることはできなくなるので、必ずダウンロードする。なくしてしまった際は、一度削除して再度作成する必要がある。
+作成直後は管理コンソールにログインできない。ユーザにパスワードを設定してあげる必要がある。</p>
+
+<p>####グループ作成
+パスワードを設定しログオンできるようになっても何もできない。それはパーミッションが設定されていないから。
+IAMユーザ単位でパーミッションを設定できるが管理が煩雑になるので、グループを作成しそのグループにパーミッションを与える。個別のIAMアカウントは必要に応じてグループにアサインする。
+Groups からCreate New Groupで作成ができる。
+Group Nameを入力しあらかじめ作成されているAWS Managed Policy から適切なものを選択する。
+最大で10ポリシーまで選択できる。
+カスタムセキュリティポリシーを設定したい場合には、Policiesからカスタムポリシーを作成可能。
+ 設定する際はJSON形式で記載する。</p>
+
+<p>####Password Policy
+Password PolicyメニューはAccount Settingsに名前が変更になったが、
+中身はPassword Policyのまま、AWSコンソールにアクセスする際のパスワードの長さ、複雑性、有効期限などを設定できる。
+同じパスワードの使い回しを避けるためにも有効期限や、過去の数回のパスワードを設定できないようにするべき。</p>
+
+<p>####ロール作成
+RolesからCreate New Roleで作成開始。Role Nameを入力しRole Typeを選択、
+Role TypeはAWS Service, Cross-Account AccessとIdentity Provider Accessの三種類がある。
+AWSサービスの権限を設定したい場合は、AWS Service RolesからAWSサービスを選択する。
+Amazon EC2を選択するとEC2からどのAWSサービスへパーミッションを設定したいかAWS Managed Policy一覧が表示され選ぶことができる。<br />
+<br/>
+<br/>
+以上、AWSを使い始めるにあたり必要最低限のところを勉強して見ました。
+カスタムのセキュリティポリシーはJSON形式で設定できるのですが、テストの範囲ではなさそうなので、ここでは踏み込まないことにしました。
+IAMの機能でActive Directoryと連携して、SSOを構成できるので、次はその仕組みを勉強する予定です。</p>
+
+      </article>
+
+      <nav class="site-nav">
+  <a href="http://blog.eku.soy">Home</a>
+  <a href="http://blog.eku.soypost/">All posts</a>
+
+  
+
+    
+
+</nav>
+
+
+      <footer class="site-footer">
+  <span class="owner">©2016 yadachi</span>
+
+  
+</footer>
+
+
+    </div>
+
+  
+<script src="http://blog.eku.soyjs/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+  </body>
+</html>
